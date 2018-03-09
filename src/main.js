@@ -36,7 +36,7 @@ router.beforeEach((to, from, next) => {
     next({ path: '/login' })
   }
   else if (user_id && access_token && to.path === '/login') {
-    next({ path: '/index' })
+    next({ path: '/home' })
   } else {
     next()
   }
