@@ -2,28 +2,24 @@
   <div id="app">
     <div class="home-page">
       <div class="sign-content" v-if="homeUrl.indexOf(this.$route.path) >= 0">
-        <div class="card container-content">
-          <div class="sign-header">
-            <img src="http://p57uimjto.bkt.clouddn.com/ykiat/logo.png@65" alt="易卡爱途-logo"/>
+        <div class="box-content">
+          <div class="card container-content">
+            <div class="sign-header">
+              <img src="http://p57uimjto.bkt.clouddn.com/ykiat/logo.png@65" alt="易卡爱途-logo"/>
+            </div>
+            <router-view/>
           </div>
-          <router-view/>
         </div>
       </div>
       <div class="manager-content" v-else>
         <router-view/>
       </div>
     </div>
-    <footer class="home-footer">
-      <div class="ykat-links">
-        <ul>
-          <li><a target="_blank" href="javascript:void(0);">关于爱途</a></li>
-          <li><a target="_blank" href="javascript:void(0);">服务协议</a></li>
-          <li><a target="_blank" href="javascript:void(0);">常见问题</a></li>
-          <li><a target="_blank" href="javascript:void(0);">客服中心</a></li>
-          <li><a target="_blank" href="javascript:void(0);">联系邮箱</a></li>
-          <li><p class="copyright">Copyright &copy; 2018 爱途. All Rights Reserved.</p></li>
-        </ul>
-      </div>
+    <footer class="home-footer color-white" v-if="homeUrl.indexOf(this.$route.path) >= 0">
+      <ai-footer></ai-footer>
+    </footer>
+    <footer class="home-footer color-black" v-else>
+      <ai-footer></ai-footer>
     </footer>
   </div>
 </template>
@@ -35,7 +31,7 @@
       return {
         homeUrl: [
           '/login', '/register',
-          '/forgetPassword', '/updatePassword'
+          '/forgetPassword', '/updatePassword',
         ]
       }
     }
@@ -59,6 +55,14 @@
     height: 100%;
   }
 
+  .color-white {
+    color: #fff;
+  }
+
+  .color-black {
+    color: #000;
+  }
+
   a {
     text-decoration: none;
     color: inherit;
@@ -72,42 +76,9 @@
     text-align: center;
     bottom: 20px;
     padding: 24px 0;
-    color: #fff;
-
-    .ykat-links {
-      clear: both;
-      display: block;
-
-      ul {
-        padding: 0;
-        list-style-type: none;
-
-        li {
-          display: inline-block;
-          vertical-align: middle;
-          padding: 0 1em;
-          line-height: 1em;
-          border-left: 1px solid #fff;
-        }
-
-        li:first-child {
-          border-left-width: 0;
-        }
-
-        a {
-          text-decoration: none;
-          color: inherit;
-        }
-
-        a:hover {
-          text-decoration: underline;
-          color: inherit;
-        }
-      }
-    }
   }
 
-  .home-page {
+  .sign-content {
     background: url(http://p57uimjto.bkt.clouddn.com/ykat/background-5.jpg@65) no-repeat;
     background-size: cover;
     width: 100%;
@@ -116,7 +87,7 @@
     margin: 0;
     position: absolute;
 
-    .sign-content {
+    .box-content {
       display: flex;
       flex: 1;
       align-items: center;

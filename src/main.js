@@ -14,6 +14,8 @@ import VueCookies from 'vue-cookies'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
+import aiFooter from './components/AiFooter'
+
 const router = new VueRouter({
   routes
 });
@@ -22,6 +24,9 @@ Vue.use(VueRouter);
 Vue.use(ElementUI);
 Vue.use(VueCookies);
 Vue.use(Vuex);
+
+// 组件
+Vue.component('ai-footer', aiFooter);
 
 // 关闭生产模式下的提示
 Vue.config.productionTip = false;
