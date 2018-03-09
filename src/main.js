@@ -1,15 +1,52 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+//使所有浏览器都支持ES6新语法
+import babelpolyfill from 'babel-polyfill'
+
 import Vue from 'vue'
 import App from './App'
-import router from './router'
+import routes from './routers'
+import store from './vuex/store'
 
-Vue.config.productionTip = false
+import Vuex from 'vuex'
+import VueRouter from 'vue-router'
+import VueCookies from 'vue-cookies'
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+
+const router = new VueRouter({
+  routes
+});
+
+Vue.use(VueRouter);
+Vue.use(ElementUI);
+Vue.use(VueCookies);
+Vue.use(Vuex);
+
+// 关闭生产模式下的提示
+Vue.config.productionTip = false;
+
+// 登录逻辑
+router.beforeEach((to, from, next) => {
+  let user_id = window.$cookies.isKey('userId');
+  let access_token = window.$cookies.isKey('accessToken');
+
+  if ((!user_id || !access_token) &&
+    to.path !== '/login' && to.path !== '/forgetPassword' && to.path !== '/register') {
+    next({ path: '/login' })
+  }
+  else if (user_id && access_token && to.path === '/login') {
+    next({ path: '/index' })
+  } else {
+    next()
+  }
+});
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
-})
+});

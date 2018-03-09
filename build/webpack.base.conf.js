@@ -2,7 +2,9 @@
 const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
-const vueLoaderConfig = require('./vue-loader.conf')
+const vueLoaderConfig = require('./vue-loader.conf');
+
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -34,12 +36,21 @@ module.exports = {
       {
         test: /\.vue$/,
         loader: 'vue-loader',
-        options: vueLoaderConfig
+        options: {
+          vueLoaderConfig,
+        }
       },
       {
         test: /\.js$/,
         loader: 'babel-loader',
         include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client')]
+      },
+      {
+        test: /\.(scss)$/,
+        loader: ExtractTextPlugin.extract({
+          use:[ { loader: 'css-loader' },{ loader: 'sass-loader'}],
+          fallback: 'vue-style-loader',
+        })
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
@@ -67,6 +78,13 @@ module.exports = {
       }
     ]
   },
+  plugins: [
+    new ExtractTextPlugin({
+      filename: 'ykat.css',
+      disable: false,
+      allChunks: true
+    }),
+  ],
   node: {
     // prevent webpack from injecting useless setImmediate polyfill because Vue
     // source contains it (although only uses it if it's native).
