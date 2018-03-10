@@ -30,8 +30,7 @@
     data: () => {
       return {
         homeUrl: [
-          '/login', '/register',
-          '/forgetPassword', '/updatePassword',
+          '/login', '/register'
         ]
       }
     }
@@ -118,6 +117,26 @@
       border-radius: 2px;
       box-shadow: 0 1px 3px rgba(26,26,26,.1);
       box-sizing: border-box;
+    }
+  }
+
+  /* 弹性布局flex */
+  .sign-box {
+    clear: left;
+    padding: 0 40px 36px;
+  }
+
+  .sign-options {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 30px;
+    font-size: 14px;
+
+    span {
+      color: #409EFF;
+      cursor: pointer;
     }
   }
 
