@@ -1,5 +1,6 @@
 import Login from './views/Login'
 import NotFound from './views/404'
+import StoreAdmin from './views/StoreAdmin'
 
 let routes = [
   {
@@ -8,9 +9,14 @@ let routes = [
     component: Login
   },
   {
+    path: '/storeAdmin',
+    name: 'StoreAdmin',
+    component: StoreAdmin
+  },
+  {
     path: '/404',
-    component: NotFound,
-    name: 'NotFound'
+    name: 'NotFound',
+    component: NotFound
   },
   {
     path: '*',
