@@ -72,6 +72,7 @@
                 :before-upload="beforeAvatarUpload">
                 <img v-if="imageUrl" :src="imageUrl" class="avatar">
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                <div class="el-upload__text">身份证照片</div>
               </el-upload>
             </el-form-item>
             <el-form-item label="门店营业执照">
