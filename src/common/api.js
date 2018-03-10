@@ -1,9 +1,5 @@
 import axios from 'axios';
-
-const javaUrl = 'http://192.168.1.200:8081';
-const nodejsUrl = 'http://localhost:8081';
-
-const apiVersion = '/api/v1';
+import globalConfig from '../config'
 
 const request = (url, options={}, method='get', backEnd=true) => {
   let headers = {};
@@ -15,10 +11,10 @@ const request = (url, options={}, method='get', backEnd=true) => {
   }
 
   let key = ~['get', 'head', 'options'].indexOf(method) ? 'params' : 'data';
-  let apiUrl = backEnd ? javaUrl : nodejsUrl;
+  let apiUrl = backEnd ? globalConfig.javaUrl : globalConfig.nodeJsUrl;
   return axios(
       Object.assign({
-        'url': `${apiUrl}${apiVersion}${url}`,
+        'url': `${apiUrl}${url}`,
         'method':method,
         'headers': headers
       }, {[key]: options})

@@ -1,6 +1,7 @@
 <template>
   <div class="sign-box">
-    <el-form :model="registerForm" v-model="registerForm" :rules="rules" ref="registerForm">
+    <router-view></router-view>
+    <el-form :model="registerForm" v-model="registerForm" :rules="rules" ref="registerForm" v-if="this.$route.path === '/register'">
       <el-form-item prop="phone">
         <el-input type="text" placeholder="手机号码" v-model="registerForm.phone" >
         </el-input>
@@ -131,7 +132,7 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             this.$store.dispatch('decrement');
-            this.$router.push('/register/2');
+            this.$router.push('/register/two');
 
             return true;
           } else {

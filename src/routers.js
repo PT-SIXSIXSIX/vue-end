@@ -1,7 +1,7 @@
 import Login from './views/Login'
 import NotFound from './views/404'
 import Register from './views/Register'
-import Register2 from './views/Register-2'
+import RegisterTwo from './views/RegisterTwo'
 
 let routes = [
   {
@@ -19,7 +19,11 @@ let routes = [
     name: 'Register',
     component: Register,
     children: [
-      { path: '/2', name: 'Register-2', component: Register2 }
+      {
+        path: 'two',
+        name: 'RegisterTwo',
+        component: RegisterTwo
+      }
     ]
   },
   {

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="home-page">
-      <div class="sign-content" v-if="homeUrl.indexOf(this.$route.path) >= 0">
+      <div class="sign-content" v-if="bgUrl.indexOf(this.$route.path) >= 0">
         <div class="box-content">
           <div class="card container-content">
             <div class="sign-header">
@@ -15,7 +15,7 @@
         <router-view/>
       </div>
     </div>
-    <footer class="home-footer color-white" v-if="homeUrl.indexOf(this.$route.path) >= 0">
+    <footer class="home-footer color-white" v-if="bgUrl.indexOf(this.$route.path) >= 0">
       <ai-footer></ai-footer>
     </footer>
     <footer class="home-footer color-black" v-else>
@@ -25,13 +25,13 @@
 </template>
 
 <script>
+  import globalConfig from './config'
+
   export default {
     name: 'App',
     data: () => {
       return {
-        homeUrl: [
-          '/login', '/register'
-        ]
+        bgUrl: globalConfig.bgRouter
       }
     }
   }
