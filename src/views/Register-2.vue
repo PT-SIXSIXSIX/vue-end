@@ -23,7 +23,7 @@
       </el-form-item>
     </el-form>
     <div class="sign-options">
-      没有帐号？<span><router-link :to="{ path: 'register' }">去注册</router-link></span>
+      没有帐号？<span><router-link :to="{ path: 'home' }">去注册</router-link></span>
     </div>
   </div>
 </template>
@@ -34,26 +34,38 @@
 
   export default {
     data: () => {
-      let validatePhone = (rule, value, callback) => {
-        if (!/^[1][34578][0-9]{9}$/.test(value)) {
-          callback(new Error('手机号码输入格式不正确'));
+      let validateIdCard = (rule, value, callback) => {
+        if (!/(^\d{18}$)|(^\d{17}(\d|X|x)$)/.test(value)) {
+          callback(new Error('身份证号输入格式不正确'));
         } else {
           callback();
         }
       };
       return {
-        loginForm: {
-          'phone': '',
-          'password': ''
+        registerForm: {
+          'name': '',
+          'idCard': '',
+          'picHead': '',
+          'picTail': '',
+          'serviceType': ''
         },
         rules: {
-          phone: [
-            { required: true, message: '请输入手机号码', trigger: 'blur' },
-            { validator: validatePhone, trigger: 'blur' }
+          name: [
+            { required: true, message: '请输入负责人真实姓名', trigger: 'blur' }
           ],
-          password: [
-            { required: true, message: '请输入密码', trigger: 'blur' }
+          idCard: [
+            { required: true, message: '请输入负责人身份证号', trigger: 'blur' },
+            { validator: validateIdCard, trigger: 'blur' }
           ],
+          picHead: [
+            { required: true, message: '请上传身份证正面照', trigger: 'blur' },
+          ],
+          picTail: [
+            { required: true, message: '请上传身份证反面照', trigger: 'blur' },
+          ],
+          serviceType: [
+            { required: true, message: '请输入服务类型', trigger: 'blur' },
+          ]
         }
       }
     },
@@ -73,15 +85,17 @@
       login() {
         requests.Login(this.loginForm).then(res => {
           let data = res.data;
-          this.$cookies.set('userId', data.userId, globalConfig.cookieExpire);
-          this.$cookies.set('accessToken', data.accessToken, globalConfig.cookieExpire);
-          this.$router.push('/home');
-        })
-        .catch(error => {
-          this.$message({
-            message: error.response.data.errorDesc,
-            type: 'error'
-          });
+          if (res.status !== 200) {
+            this.$message({
+              message: data.errorDesc,
+              type: 'error'
+            });
+            return false;
+          } else {
+            this.$cookies.set('userId', data.userId, globalConfig.cookieExpire);
+            this.$cookies.set('accessToken', data.accessToken, globalConfig.cookieExpire);
+            this.$router.push('/home');
+          }
         });
       }
     }
