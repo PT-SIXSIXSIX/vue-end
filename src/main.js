@@ -7,6 +7,7 @@ import Vue from 'vue'
 import App from './App'
 import routes from './routers'
 import store from './vuex/store'
+import globalConfig from './config'
 
 import Vuex from 'vuex'
 import VueRouter from 'vue-router'
@@ -32,20 +33,19 @@ Vue.component('ai-footer', aiFooter);
 Vue.config.productionTip = false;
 
 // 登录逻辑
-// router.beforeEach((to, from, next) => {
-//   let user_id = window.$cookies.isKey('userId');
-//   let access_token = window.$cookies.isKey('accessToken');
-//
-//   if ((!user_id || !access_token) &&
-//     to.path !== '/login' && to.path !== '/forgetPassword' && to.path !== '/register') {
-//     next({ path: '/login' })
-//   }
-//   else if (user_id && access_token && to.path === '/login') {
-//     next({ path: '/home' })
-//   } else {
-//     next()
-//   }
-// });
+router.beforeEach((to, from, next) => {
+  let user_id = window.$cookies.isKey('userId');
+  let access_token = window.$cookies.isKey('accessToken');
+  let allowRouter = globalConfig.bgRouter.concat(['/404']);
+  if ((!user_id || !access_token) && allowRouter.indexOf(to.path) < 0) {
+    next({ path: '/login' })
+  }
+  else if (user_id && access_token && to.path === '/login') {
+    next({ path: '/home' })
+  } else {
+    next()
+  }
+});
 
 /* eslint-disable no-new */
 new Vue({
