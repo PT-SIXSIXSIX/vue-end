@@ -1,5 +1,4 @@
 <template>
-  <el-header>
     <el-row>
       <el-col :span="8">
         <img src="http://p57uimjto.bkt.clouddn.com/web-logo-darkblue.png@65" height="50px"></img>
@@ -15,7 +14,6 @@
         </el-menu>
       </el-col>
     </el-row>
-  </el-header>
 </template>
 
 <script>
@@ -27,6 +25,7 @@
 <style scoped>
   .el-header {
     background-color: white;
+    border-bottom: 1px;
     color: #333;
     text-align: center;
     height: 100%;

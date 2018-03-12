@@ -41,7 +41,15 @@ const axiosGetSmsCode = params => {
 
 const axiosVerifySmsCode = params => {
   return request('/sms/verify', params, 'get', false);
-}
+};
+
+const axiosGetStoreInfo = (userId, params) => {
+  return request('/users/' + userId + '/store', params, 'get');
+};
+
+const axiosPutStoreInfo = (userId, data) => {
+  return request('/users/' + userId + '/store', data, 'put');
+};
 
 
 let requests = {
@@ -49,7 +57,9 @@ let requests = {
   Register: axiosRegister,
   VerifyPhone: axiosVerifyPhone,
   GetSmsCode: axiosGetSmsCode,
-  VerifySmsCode: axiosVerifySmsCode
+  VerifySmsCode: axiosVerifySmsCode,
+  GetStoreInfo: axiosGetStoreInfo,
+  PutStoreInfo: axiosPutStoreInfo,
 };
 
 export default requests;
