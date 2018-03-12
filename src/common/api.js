@@ -51,6 +51,10 @@ const axiosPutStoreInfo = (userId, data) => {
   return request('/users/' + userId + '/store', data, 'put');
 };
 
+const axiosGetOrders = (userId, type, params) => {
+  return request('/users/' + userId + '/orders/' + type, params, 'get');
+}
+
 
 let requests = {
   Login: axiosLogin,
@@ -60,6 +64,7 @@ let requests = {
   VerifySmsCode: axiosVerifySmsCode,
   GetStoreInfo: axiosGetStoreInfo,
   PutStoreInfo: axiosPutStoreInfo,
+  GetOrders: axiosGetOrders,
 };
 
 export default requests;

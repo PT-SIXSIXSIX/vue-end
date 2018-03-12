@@ -3,6 +3,7 @@ import NotFound from './views/404'
 import StoreAdmin from './views/StoreAdmin'
 import Register from './views/Register'
 import RegisterTwo from './views/RegisterTwo'
+import OrderAdmin from './views/OrderAdmin'
 
 let routes = [
   {
@@ -14,6 +15,11 @@ let routes = [
     path: '/storeAdmin',
     name: 'StoreAdmin',
     component: StoreAdmin
+  },
+  {
+    path: '/orderAdmin',
+    name: 'OrderAdmin',
+    component: OrderAdmin
   },
   {
     path: '/404',

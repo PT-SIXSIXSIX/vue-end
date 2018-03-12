@@ -86,6 +86,7 @@
     </el-container>
   </el-container>
 </template>
+
 <script>
   import requests from '../common/api';
   export default {
@@ -161,6 +162,7 @@
     }
   }
 </script>
+
 <style lang="scss">
   .el-aside {
     background-image: url('http://p57uimjto.bkt.clouddn.com/aside.png@65');
