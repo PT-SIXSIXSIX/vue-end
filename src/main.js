@@ -16,7 +16,7 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
 import aiFooter from './components/AiFooter'
-import aiHeader from './components/AiHeader'
+import aiAside from './components/AiAside'
 
 const router = new VueRouter({
   routes
@@ -29,7 +29,7 @@ Vue.use(Vuex);
 
 // 组件
 Vue.component('ai-footer', aiFooter);
-Vue.component('ai-header', aiHeader);
+Vue.component('ai-aside', aiAside);
 
 // 关闭生产模式下的提示
 Vue.config.productionTip = false;

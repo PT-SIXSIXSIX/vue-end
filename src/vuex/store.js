@@ -7,7 +7,8 @@ Vue.use(Vuex)
 
 // 应用初始状态
 const state = {
-  count: 0
+  count: 0,
+  breadcrumbs: []
 }
 
 // 定义所需的 mutations
@@ -17,8 +18,11 @@ const mutations = {
   },
   DECREMENT(state) {
     state.count--
+  },
+  SET_BREADCRUMBS(state, breadcrumbs) {
+    state.breadcrumbs = breadcrumbs
   }
-}
+};
 
 // 创建 store 实例
 export default new Vuex.Store({

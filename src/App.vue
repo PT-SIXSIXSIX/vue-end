@@ -15,12 +15,8 @@
         <router-view/>
       </div>
     </div>
-    <footer class="home-footer color-white" v-if="bgUrl.indexOf(this.$route.path) >= 0">
-      <ai-footer></ai-footer>
-    </footer>
-    <footer class="home-footer color-black" v-else>
-      <ai-footer></ai-footer>
-    </footer>
+      <ai-footer class="color-white" v-if="bgUrl.indexOf(this.$route.path) >= 0"></ai-footer>
+      <ai-footer class="color-black" v-else></ai-footer>
   </div>
 </template>
 
@@ -29,7 +25,7 @@
 
   export default {
     name: 'App',
-    data: () => {
+    data() {
       return {
         bgUrl: globalConfig.bgRouter
       }
@@ -62,19 +58,34 @@
     color: #000;
   }
 
+  .fl {
+    float: left;
+  }
+
+  .fr {
+    float: right;
+  }
+
+  .h1 {
+    height: 100%;
+  }
+
   a {
     text-decoration: none;
     color: inherit;
   }
 
-  .home-footer {
-    width: 100%;
-    position: absolute;
-    font-size: 13px;
-    line-height: 21px;
-    text-align: center;
-    bottom: 20px;
-    padding: 24px 0;
+  .index-container {
+    height: calc(100vh - 81px);
+  }
+
+  .el-container:nth-child(5) .el-aside,
+  .el-container:nth-child(6) .el-aside {
+    line-height: 260px;
+  }
+
+  .el-container:nth-child(7) .el-aside {
+    line-height: 320px;
   }
 
   .sign-content {
