@@ -6,7 +6,7 @@
           <img src="http://p57uimjto.bkt.clouddn.com/web-logo-darkblue.png@65" height="50px"></img>
         </el-col>
         <el-col :span="16">
-          <el-menu :default-active="1"  class="el-menu-demo" mode="horizontal" @select="handleSelect" background-color="inherit" text-color="#203f65" active-text-color="#409EFF">
+          <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
             <el-menu-item index="1">我的门店</el-menu-item>
             <el-menu-item index="2">我的订单</el-menu-item>
             <el-menu-item index="3">我的账户</el-menu-item>
@@ -27,6 +27,7 @@
             @close="handleClose"
             background-color="inherit"
             text-color="white"
+            style=""
           >
             <el-menu-item index="1">
               <i class="el-icon-document"></i>
@@ -129,15 +130,10 @@
   }
 </script>
 <style lang="scss">
-  .el-header {
-    background-color: white;
-    color: #333;
-    text-align: center;
-    height: 100%;
-  }
 
   .el-aside {
-    background-color: #203f65;
+    background-image: url('http://p57uimjto.bkt.clouddn.com/aside.png@65');
+    background-size:100% 100%;
     color: #333;
     text-align: center;
     height: 100%;
@@ -177,7 +173,7 @@
   }
 
   .avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
+    border: 1px dashed #606266;
     border-radius: 6px;
     cursor: pointer;
     position: relative;

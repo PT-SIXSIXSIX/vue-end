@@ -42,7 +42,7 @@
       </el-col>
     </el-form-item>
     <el-form-item prop="serviceType">
-      <el-input type="text" placeholder="服务类型" v-model="registerTwoForm.serviceType" >>
+      <el-input type="text" placeholder="服务类型" v-model="registerTwoForm.serviceType" >
       </el-input>
     </el-form-item>
     <el-form-item>
