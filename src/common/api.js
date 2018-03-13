@@ -1,7 +1,7 @@
 import axios from 'axios';
 import globalConfig from '../config'
 
-const request = (url, options={}, method='get', _this=this, backEnd=true, autoCatch=true) => {
+const request = (url, options={}, method='get', _this, backEnd=true, autoCatch=true) => {
   let headers = {};
   if (!url.endsWith('login') && !url.endsWith('register') && !url.endsWith('forgetPassword')) {
     headers = {
@@ -81,6 +81,10 @@ const axiosBatchSettle = (userId, data, _this) => {
   return request('/users/' + userId + '/sa', data, 'put', _this);
 };
 
+const axiosGetStaffList = (userId, params, _this) => {
+  return request('/users/' + userId + '/staffs', params, 'get', _this);
+};
+
 let requests = {
   Login: axiosLogin,
   Register: axiosRegister,
@@ -94,6 +98,7 @@ let requests = {
   UpdateOrderState: axiosUpdateOrderState,
   GetSettleList: axiosGetSettleList,
   BatchSettle: axiosBatchSettle,
+  GetStaffList: axiosGetStaffList,
 };
 
 export default requests;

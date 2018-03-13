@@ -52,7 +52,7 @@
     /*line-height: 160px;*/
 
     .main-content {
-      /*margin:10px 10%;*/
+      margin:20px 0;
       /*padding: 20px 0;*/
       width: 100%;
     }
