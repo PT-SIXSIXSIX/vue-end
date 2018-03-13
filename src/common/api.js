@@ -1,7 +1,7 @@
 import axios from 'axios';
 import globalConfig from '../config'
 
-const request = (url, options={}, method='get', _this=this, backEnd=true, autoCatch=true) => {
+const request = (url, options={}, method='get', _this, backEnd=true, autoCatch=true) => {
   let headers = {};
   if (!url.endsWith('login') && !url.endsWith('register') && !url.endsWith('forgetPassword')) {
     headers = {
@@ -65,17 +65,21 @@ const axiosPutStoreInfo = (userId, data, _this) => {
   return request('/users/' + userId + '/store', data, 'put', _this);
 };
 
-const axiosGetOrders = (userId, type, params) => {
+const axiosGetOrders = (userId, type, params, _this) => {
   return request('/users/' + userId + '/orders/' + type, params, 'get', _this);
 };
 
-const axiosUpdateOrderState = (userId, type, orderId, data) => {
+const axiosUpdateOrderState = (userId, type, orderId, data, _this) => {
   return request('/users/' + userId + '/store/' + orderId, data, 'put', _this);
 };
 
-const axiosGetSettleList = (userId, params) => {
+const axiosGetSettleList = (userId, params, _this) => {
   return request('/users/' + userId + '/settle_account_records', params, 'get', _this);
 };
+
+const axiosGetStaffList = (userId, params, _this) => {
+  return request('/users/' + userId + '/staffs', params, 'get', _this);
+}
 
 let requests = {
   Login: axiosLogin,
@@ -89,6 +93,7 @@ let requests = {
   GetOrders: axiosGetOrders,
   UpdateOrderState: axiosUpdateOrderState,
   GetSettleList: axiosGetSettleList,
+  GetStaffList: axiosGetStaffList,
 };
 
 export default requests;

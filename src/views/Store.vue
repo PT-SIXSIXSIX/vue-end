@@ -131,13 +131,10 @@
       this.$store.commit('SET_BREADCRUMBS', ['我的门店', '门店信息']);
 
       this.userId = this.$cookies.get('userId');
-      requests.GetStoreInfo(this.userId).then(res => {
+      requests.GetStoreInfo(this.userId, {}, this).then(res => {
         this.oldForm = JSON.parse(JSON.stringify(res.data));
         this.form = JSON.parse(JSON.stringify(res.data));
       })
-        .catch(error => {
-          this.$message.error('获取门店信息失败');
-        });
     }
   }
 </script>
