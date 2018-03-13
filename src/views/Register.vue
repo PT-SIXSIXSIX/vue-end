@@ -1,11 +1,10 @@
 <template>
-  <div>
-    <div class="sign-header">
-      注册
-    </div>
     <div class="sign-box">
       <router-view></router-view>
       <el-form :model="registerForm" v-model="registerForm" :rules="rules" ref="registerForm" v-if="this.$route.path === '/register'">
+        <div class="sign-header">
+          注册
+        </div>
         <el-form-item prop="phone">
           <el-input type="text" placeholder="手机号码" v-model="registerForm.phone" >
           </el-input>
@@ -46,7 +45,6 @@
         已有帐号？<span><router-link :to="{ path: 'login' }">去登录</router-link></span>
       </div>
     </div>
-  </div>
 </template>
 
 <script>

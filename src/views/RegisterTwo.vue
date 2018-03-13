@@ -1,5 +1,8 @@
 <template>
   <el-form :model="registerTwoForm" :rules="rules" ref="registerTwoForm">
+    <div class="sign-header">
+      注册
+    </div>
     <el-form-item prop="name">
       <el-input type="text" placeholder="负责人真实姓名" v-model="registerTwoForm.name" >>
       </el-input>

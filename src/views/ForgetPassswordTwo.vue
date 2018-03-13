@@ -1,5 +1,8 @@
 <template>
   <el-form :model="forgetTwoForm" :rules="rules" ref="forgetTwoForm">
+    <div class="sign-header">
+      重置密码
+    </div>
     <el-form-item prop="password">
       <el-input type="password" placeholder="密码" v-model="forgetTwoForm.password">
       </el-input>
@@ -64,6 +67,10 @@
           this.$router.push('/login');
         });
       }
+    },
+    mounted() {
+      console.log('yes');
+      document.getElementsByClassName('sign-header').innerHTML = '重置密码';
     }
   }
 </script>
