@@ -1,21 +1,22 @@
 <template>
   <div>
-    <el-col :span="18" :offset="2">
-      <div class="block" style="padding-bottom: 5px;">
-        <el-date-picker
-          v-model="value7"
-          type="daterange"
-          align="right"
-          unlink-panels
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          value-format="timestamp">
-        </el-date-picker>
-        <el-button type="primary" @click="querySettleList" plain>查询</el-button>
-      </div>
+    <el-col :span="18" :offset="1">
+      <el-row style="padding: 10px" :gutter="20">
+        <el-col :span="5">
+          <el-input
+            placeholder="查询..."
+            v-model="input1">
+          </el-input>
+        </el-col>
+        <el-col :span="3" :offset="2">
+          <el-button type="primary" @click="querySettleList" plain>查询</el-button>
+        </el-col>
+        <el-col :span="3" :offset="2">
+          <el-button type="success" @click="batchSettle" plain>批量结算</el-button>
+        </el-col>
+      </el-row>
     </el-col>
-    <el-col :span="20" :offset="1">
+    <el-col :span="22" :offset="1">
       <el-table
         ref="multipleTable"
         :data="tableData"
@@ -23,48 +24,53 @@
         border
         max-height="520">
         <el-table-column
+          type="selection"
+          align="center"
+          min-width="10%">
+        </el-table-column>
+        <el-table-column
           prop="setAccId"
-          min-width="12%"
+          min-width="15%"
           align="center"
           label="结算单号">
         </el-table-column>
         <el-table-column
           prop="companyName"
-          min-width="10%"
+          min-width="20%"
           align="center"
           label="服务网点">
         </el-table-column>
         <el-table-column
           prop="driverName"
-          min-width="25%"
+          min-width="10%"
           align="center"
           label="付款人"
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
           prop="driverPhone"
-          min-width="25%"
+          min-width="18%"
           align="center"
           label="手机号码"
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
           prop="tradedAt"
-          min-width="25%"
+          min-width="15%"
           align="center"
           label="付款时间"
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
           prop="tradeMoney"
-          min-width="25%"
+          min-width="10%"
           align="center"
           label="付款金额"
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
           prop="commission"
-          min-width="25%"
+          min-width="10%"
           align="center"
           label="平台佣金"
           :formatter="commissionFormatter"
@@ -72,7 +78,7 @@
         </el-table-column>
         <el-table-column
           prop="actualMoney"
-          min-width="25%"
+          min-width="10%"
           align="center"
           label="实际到账"
           :formatter="actualFormatter"
@@ -84,6 +90,7 @@
           align="center"
           :formatter="stateFormatter"
           label="状态"
+          fixed="right"
           show-overflow-tooltip>
         </el-table-column>
       </el-table>
@@ -111,6 +118,19 @@
         value7: [],
         totalItems: 0,
         currentPage: 1,
+        optionValue: '',
+        input1: '',
+        input2: '',
+        options: [{
+          value: 0,
+          label: '联保中'
+        },{
+          value: 1,
+          label: '待结算'
+        },{
+          value: 2,
+          label: '已结算'
+        }]
       };
     },
     methods: {
@@ -139,7 +159,7 @@
           });
       },
       querySettleList () {
-        let q = 'time:' + this.value7[0] + '-' + this.value7[1];
+        let q = this.input1;
         let params = {ipp: this.ipp, q: q};
         this.getSettleList(this.userId, this.projType, params);
       },
@@ -147,6 +167,26 @@
         let edge = this.ipp*currentPage;
         this.tableData = this.tableOrgData.slice(edge - this.ipp, edge);
       },
+      // handleSelectionChange (value) {
+      //   console.log(value);
+      // },
+      batchSettle (){
+        let selected = this.$refs.multipleTable.selection;
+        console.log(selected);
+        let data = {
+          setAccIds: []
+        };
+        for (let item in selected){
+          console.log(selected[item]);
+          data.setAccIds.push(selected[item].setAccId);
+        }
+        console.log(data);
+        requests.BatchSettle(this.userId, data, this);
+      },
+      // stateFilter (value, row, column) {
+      //   console.log(value, this.optionValue);
+      //   // return value == this.optionValue;
+      // },
     },
     created() {
       this.$store.commit('SET_BREADCRUMBS', ['结算管理']);

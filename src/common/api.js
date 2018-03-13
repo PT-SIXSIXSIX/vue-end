@@ -77,9 +77,13 @@ const axiosGetSettleList = (userId, params, _this) => {
   return request('/users/' + userId + '/settle_account_records', params, 'get', _this);
 };
 
+const axiosBatchSettle = (userId, data, _this) => {
+  return request('/users/' + userId + '/sa', data, 'put', _this);
+};
+
 const axiosGetStaffList = (userId, params, _this) => {
   return request('/users/' + userId + '/staffs', params, 'get', _this);
-}
+};
 
 let requests = {
   Login: axiosLogin,
@@ -93,6 +97,7 @@ let requests = {
   GetOrders: axiosGetOrders,
   UpdateOrderState: axiosUpdateOrderState,
   GetSettleList: axiosGetSettleList,
+  BatchSettle: axiosBatchSettle,
   GetStaffList: axiosGetStaffList,
 };
 
