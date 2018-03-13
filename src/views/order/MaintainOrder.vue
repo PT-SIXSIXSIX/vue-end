@@ -97,7 +97,7 @@
       },
       getOrders (userId, type, params) {
         console.log('req');
-        requests.GetOrders(userId, type, params).then(res => {
+        requests.GetOrders(userId, type, params, this).then(res => {
           this.totalItems = res.data.maxPage * this.ipp;
           this.tableOrgData = JSON.parse(JSON.stringify(res.data.records));
           this.tableData = this.tableOrgData.slice(0, this.ipp);
@@ -112,7 +112,7 @@
         this.getOrders(this.userId, this.projType, params);
       },
       handleOrder (orderId, state) {
-        requests.UpdateOrderState(this.userId, this.type, orderId, {state: state}).then(res => {
+        requests.UpdateOrderState(this.userId, this.type, orderId, {state: state}, this).then(res => {
           this.$message.success('操作成功!')
         })
           .catch(error => {
