@@ -7,8 +7,8 @@
           <div class="fl">
             后台管理系统
           </div>
-          <div class="fr">
-            管理员&nbsp;<i class="fa fa-sign-out" aria-hidden="true" style="color: #409EFF"></i>
+          <div class="fr sign-out">
+            管理员&nbsp;<i class="fa fa-sign-out" @click="logout" aria-hidden="true" style="color: #409EFF"></i>
           </div>
         </div>
       </el-header>
@@ -31,6 +31,13 @@
   export default {
     data() {
       return {
+      }
+    },
+    methods: {
+      logout() {
+        this.$cookies.remove('userId');
+        this.$cookies.remove('accessToken');
+        this.$router.push('/login');
       }
     }
   }
@@ -61,6 +68,12 @@
 
     .container-fluid {
       padding: 0 30px 0 10px;
+    }
+  }
+
+  .sign-out {
+    i {
+      cursor: pointer;
     }
   }
 </style>

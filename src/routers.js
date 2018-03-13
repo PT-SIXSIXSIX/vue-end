@@ -3,6 +3,7 @@ import NotFound from './views/404'
 import Register from './views/Register'
 import RegisterTwo from './views/RegisterTwo'
 import ForgetPassword from './views/ForgetPassword'
+import ForgetPasswordTwo from './views/ForgetPassswordTwo'
 
 import index from './views/index'
 import Store from './views/Store'
@@ -74,7 +75,10 @@ let routes = [
   {
     path: '/forgetPassword',
     name: 'ForgetPassword',
-    component: ForgetPassword
+    component: ForgetPassword,
+    children: [
+      { path: 'two', name: 'ForgetPasswordTwo', component: ForgetPasswordTwo }
+    ]
   },
   {
     path: '*',

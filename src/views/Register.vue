@@ -1,67 +1,77 @@
 <template>
-  <div class="sign-box">
-    <router-view></router-view>
-    <el-form :model="registerForm" v-model="registerForm" :rules="rules" ref="registerForm" v-if="this.$route.path === '/register'">
-      <el-form-item prop="phone">
-        <el-input type="text" placeholder="手机号码" v-model="registerForm.phone" >
-        </el-input>
-      </el-form-item>
-      <el-form-item prop="verifyCode">
-        <el-input type="text" placeholder="验证码" v-model="registerForm.verifyCode" >
-          <el-button slot="append" :disabled="!show" @click="getVerifyCode('registerForm')">
-            <span v-show="show">获取验证码</span>
-            <span v-show="!show" class="count">{{count}} s</span>
-          </el-button>
-        </el-input>
-      </el-form-item>
-      <el-form-item prop="reservePhone">
-        <el-input type="text" placeholder="备用手机号码" v-model="registerForm.reservePhone" >
-        </el-input>
-      </el-form-item>
-      <el-form-item prop="password">
-        <el-input type="password" placeholder="密码" v-model="registerForm.password">
-        </el-input>
-      </el-form-item>
-      <el-form-item prop="confirmPassword">
-        <el-input type="password" placeholder="确认密码" v-model="registerForm.confirmPassword">
-        </el-input>
-      </el-form-item>
-      <el-form-item prop="companyName">
-        <el-input type="text" placeholder="服务网点" v-model="registerForm.companyName">
-        </el-input>
-      </el-form-item>
-      <el-form-item prop="location">
-        <el-input type="text" placeholder="网点地址" v-model="registerForm.location">
-        </el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button id="register" @click="submitForm('registerForm')" style="width:100%" type="primary">下一步</el-button>
-      </el-form-item>
-    </el-form>
-    <div class="sign-options">
-      已有帐号？<span><router-link :to="{ path: 'login' }">去登录</router-link></span>
+  <div>
+    <div class="sign-header">
+      注册
+    </div>
+    <div class="sign-box">
+      <router-view></router-view>
+      <el-form :model="registerForm" v-model="registerForm" :rules="rules" ref="registerForm" v-if="this.$route.path === '/register'">
+        <el-form-item prop="phone">
+          <el-input type="text" placeholder="手机号码" v-model="registerForm.phone" >
+          </el-input>
+        </el-form-item>
+        <el-form-item prop="verifyCode">
+          <el-input type="text" placeholder="验证码" v-model="registerForm.verifyCode" >
+            <el-button slot="append" :disabled="!show" @click="getVerifyCode('registerForm')">
+              <span v-show="show">获取验证码</span>
+              <span v-show="!show" class="count">{{count}} s</span>
+            </el-button>
+          </el-input>
+        </el-form-item>
+        <el-form-item prop="reservePhone">
+          <el-input type="text" placeholder="备用手机号码" v-model="registerForm.reservePhone" >
+          </el-input>
+        </el-form-item>
+        <el-form-item prop="password">
+          <el-input type="password" placeholder="密码" v-model="registerForm.password">
+          </el-input>
+        </el-form-item>
+        <el-form-item prop="confirmPassword">
+          <el-input type="password" placeholder="确认密码" v-model="registerForm.confirmPassword">
+          </el-input>
+        </el-form-item>
+        <el-form-item prop="companyName">
+          <el-input type="text" placeholder="服务网点" v-model="registerForm.companyName">
+          </el-input>
+        </el-form-item>
+        <el-form-item prop="location">
+          <el-input type="text" placeholder="网点地址" v-model="registerForm.location">
+          </el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button id="register" @click="submitForm('registerForm')" style="width:100%" type="primary">下一步</el-button>
+        </el-form-item>
+      </el-form>
+      <div class="sign-options">
+        已有帐号？<span><router-link :to="{ path: 'login' }">去登录</router-link></span>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
   import requests from '../common/api';
+  import utils from '../common/utils';
 
   export default {
     // 不能用箭头函数
     data() {
       let validatePhone = (rule, value, callback) => {
-        if (!/^[1][34578][0-9]{9}$/.test(value)) {
+        if (!utils.verifyPhone(value)) {
           callback(new Error('手机号码输入格式不正确'));
         } else {
           callback();
-          // requests.VerifyPhone().then(res => {
-          //   if (res.data.phoneExist) {
-          //     callback(new Error('手机号码已被注册'));
-          //   } else {
-          //     callback();
-          //   }
-          // });
+          requests.VerifyPhone({verifyPhone: value}).then(res => {
+            if (res.data.phoneExist) {
+              callback(new Error('手机号码已被注册'));
+            } else {
+              callback();
+            }
+          }).catch(error => {
+            console.log(error);
+            this.$message.error('发生未知错误');
+            callback();
+          });
         }
       };
       let validateVerifyCode = (rule, value, callback) => {
@@ -162,12 +172,6 @@
                     this.timer = null;
                   }
                 }, 1000);
-              })
-              .catch(error => {
-                this.$message({
-                  message: error.response.data.errorDesc,
-                  type: 'error'
-                })
               });
             }
           }
