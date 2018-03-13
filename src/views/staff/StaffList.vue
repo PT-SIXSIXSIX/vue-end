@@ -11,7 +11,7 @@
           stripe
           style="width: 100%">
           <el-table-column
-            prop="staff_id"
+            prop="staffId"
             label="店员序号"
             width="100">
           </el-table-column>
@@ -29,11 +29,22 @@
               <el-button
                 size="small"
                 type="danger"
-                @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                @click="dialogVisible = true">删除</el-button>
+              <el-dialog
+                title="删除店员"
+                :visible.sync="dialogVisible"
+                width="30%">
+                <span>你确定删除这个店员吗？</span>
+                <span slot="footer" class="dialog-footer">
+                  <el-button @click="dialogVisible = false">取 消</el-button>
+                  <el-button type="primary" @click="handleDelete(scope.row.staffId, scope.row)">确 定</el-button>
+                </span>
+              </el-dialog>
             </template>
           </el-table-column>
         </el-table>
     </div>
+
     <div class="content-bottom">
       <el-pagination
         @current-change="handleCurrentChange"
@@ -58,7 +69,8 @@
         staffs: [],
         totalItems: 0,
         currentPage: 1,
-        ipp: globalConfig.itemPerPage
+        ipp: globalConfig.itemPerPage,
+        dialogVisible: false,
       }
     },
     methods: {
@@ -66,8 +78,14 @@
         let q = { q: this.q };
         this.getStaffs(q);
       },
-      handleDelete(index, row) {
-        console.log(index, row);
+      handleDelete(staffId, row) {
+        this.dialogVisible = false;
+        requests.DeleteStaff(this.userId, staffId, {}, this).then(res => {
+          this.$message.success('删除成功');
+          this.staffs = this.staffs.filter(function (staff) {
+            return staff.staffId !== staffId;
+          });
+        });
       },
       getStaffs(q={}) {
         let pageParams = { page: this.currentPage, ipp: this.ipp };
@@ -75,7 +93,11 @@
         requests.GetStaffList(this.userId, params, this).then(res => {
           this.totalItems = res.data.maxPage * this.ipp;
           this.tableOrgData = res.data.staffs;
-          this.staffs = this.tableOrgData.slice(0, this.ipp);
+          this.staffs = [{
+            staffId: 1,
+            name: '小黄',
+            phone: '13290046270'
+          }];
         })
       },
       handleCurrentChange (currentPage) {

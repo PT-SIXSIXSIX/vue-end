@@ -21,7 +21,6 @@ const request = (url, options={}, method='get', _this, backEnd=true, autoCatch=t
   );
 
   return autoCatch ? promise.catch(error => {
-    console.log(error);
     if (!error.response || !error.response.hasOwnProperty('data')) {
       _this.$message.error('发生未知错误');
     } else {
@@ -85,6 +84,14 @@ const axiosGetStaffList = (userId, params, _this) => {
   return request('/users/' + userId + '/staffs', params, 'get', _this);
 };
 
+const axiosDeleteStaff = (userId, staffId, params, _this) => {
+  return request('/users/' + userId + '/staffs/' + staffId, params, 'delete', _this);
+};
+
+const axiosAddStaff = (userId, data, _this) => {
+  return request('/users/' + userId + '/staffs', data, 'post', _this);
+};
+
 let requests = {
   Login: axiosLogin,
   Register: axiosRegister,
@@ -99,6 +106,8 @@ let requests = {
   GetSettleList: axiosGetSettleList,
   BatchSettle: axiosBatchSettle,
   GetStaffList: axiosGetStaffList,
+  DeleteStaff: axiosDeleteStaff,
+  AddStaff: axiosAddStaff,
 };
 
 export default requests;

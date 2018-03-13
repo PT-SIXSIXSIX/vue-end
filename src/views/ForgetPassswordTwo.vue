@@ -19,7 +19,7 @@
 
 <script>
   import requests from '../common/api';
-  import utils from '../common/utils'
+  import utils from '../common/utils';
 
   export default {
     data() {
@@ -67,10 +67,6 @@
           this.$router.push('/login');
         });
       }
-    },
-    mounted() {
-      console.log('yes');
-      document.getElementsByClassName('sign-header').innerHTML = '重置密码';
     }
   }
 </script>
