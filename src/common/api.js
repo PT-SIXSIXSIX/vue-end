@@ -53,8 +53,15 @@ const axiosPutStoreInfo = (userId, data) => {
 
 const axiosGetOrders = (userId, type, params) => {
   return request('/users/' + userId + '/orders/' + type, params, 'get');
-}
+};
 
+const axiosUpdateOrderState = (userId, type, orderId, data) => {
+  return request('/users/' + userId + '/store/' + orderId, data, 'put');
+};
+
+const axiosGetSettleList = (userId, params) => {
+  return request('/users/' + userID + '/settle_account_records');
+};
 
 let requests = {
   Login: axiosLogin,
@@ -65,6 +72,8 @@ let requests = {
   GetStoreInfo: axiosGetStoreInfo,
   PutStoreInfo: axiosPutStoreInfo,
   GetOrders: axiosGetOrders,
+  UpdateOrderState: axiosUpdateOrderState,
+  GetSettleList: axiosGetSettleList,
 };
 
 export default requests;

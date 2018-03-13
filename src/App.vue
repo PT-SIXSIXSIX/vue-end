@@ -76,7 +76,7 @@
   }
 
   .index-container {
-    height: calc(100vh - 81px);
+    height: calc(100vh - 69px);
   }
 
   .el-container:nth-child(5) .el-aside,

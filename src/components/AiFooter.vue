@@ -22,7 +22,7 @@
     line-height: 21px;
     text-align: center;
     bottom: 0;
-    padding: 30px 0;
+    padding: 24px 0;
     background-color: #f1f1f1;
   }
 

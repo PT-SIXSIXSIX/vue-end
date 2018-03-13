@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-col :span="12" :offset="1">
+    <el-col :span="18" :offset="2">
       <div class="block" style="padding-bottom: 5px;">
         <el-date-picker
           v-model="value7"
@@ -10,46 +10,40 @@
           range-separator="至"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
-          :picker-options="pickerOptions2">
+          value-format="timestamp">
         </el-date-picker>
-        <el-button type="primary" plain>查询</el-button>
+        <el-button type="primary" @click="queryOrder" plain>查询</el-button>
       </div>
     </el-col>
-    <el-col :span="22" :offset="1">
+    <el-col :span="20" :offset="1">
       <el-table
         ref="multipleTable"
         :data="tableData"
         tooltip-effect="dark"
-        border="true"
-        max-height="640"
-        @selection-change="handleSelectionChange">
-        <el-table-column
-          type="selection"
-          align="center"
-          min-width="45">
-        </el-table-column>
+        border
+        max-height="520">
         <el-table-column
           prop="orderId"
-          min-width="120px"
+          min-width="12%"
           align="center"
           label="维修预约单号">
         </el-table-column>
         <el-table-column
           prop="createdAt"
-          min-width="90px"
+          min-width="10%"
           align="center"
           label="预约时间">
         </el-table-column>
         <el-table-column
           prop="projectDescp"
-          min-width="250px"
+          min-width="25%"
           align="center"
           label="预约项目"
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
           prop="state"
-          min-width="100px"
+          min-width="12%"
           align="center"
           :formatter="formatter"
           label="预约单状态"
@@ -57,27 +51,25 @@
         </el-table-column>
         <el-table-column
           label="操作"
-          min-width="200"
+          fixed="right"
+          min-width="10%"
           align="center"
           show-overflow-tooltip>
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text">接受</el-button>
-            <el-button type="text">拒绝</el-button>
-            <el-button type="text">改签</el-button>
+            <el-button @click="handleOrder(scope.row.orderId, 1)" type="text">接受</el-button>
+            <el-button @click="handleOrder(scope.row.orderId, -1)" type="text" >拒绝</el-button>
           </template>
         </el-table-column>
       </el-table>
     </el-col>
-    <el-col :span="16" :offset="4">
+    <el-col :span="16" :offset="3">
       <div class="block" style="padding-top: 10px;">
         <el-pagination
-          @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
-          :current-page="currentPage4"
-          :page-sizes="[100, 200, 300, 400]"
-          :page-size="100"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="400">
+          :current-page="currentPage"
+          :page-size="7"
+          :total="totalItems"
+          layout="prev, pager, next, jumper">
         </el-pagination>
       </div>
     </el-col>
@@ -87,25 +79,12 @@
 <script>
   import requests from '../../common/api';
   export default {
-    beforeCreate (){
-      let userId = 1;
-      let type = 1;
-      let params = {
-        page: 1,
-        ipp: 7,
-        q: 'state:0|1|-1+time:2018年3月6日-2018年3月7日'
-      };
-      requests.GetOrders(userId, type, params).then(res => {
-        this.tableData = JSON.parse(JSON.stringify(res.data.records));
-      })
-        .catch(error => {
-          this.$message.error(error.response.data.errorDesc);
-        });
-    },
     data() {
       return {
         tableData: [],
-        multipleSelection: []
+        value7: [],
+        totalItems: 0,
+        currentPage: 1,
       };
     },
     methods: {
@@ -115,11 +94,44 @@
           '0': '待司机确认'
         };
         return states[row.state];
-      }
+      },
+      getOrders (userId, type, params) {
+        console.log('req');
+        requests.GetOrders(userId, type, params).then(res => {
+          this.totalItems = res.data.maxPage * this.ipp;
+          this.tableOrgData = JSON.parse(JSON.stringify(res.data.records));
+          this.tableData = this.tableOrgData.slice(0, this.ipp);
+        })
+          .catch(error => {
+            this.$message.error(error.response.data.errorDesc);
+          });
+      },
+      queryOrder () {
+        let q = 'time:' + this.value7[0] + '-' + this.value7[1];
+        let params = {ipp: this.ipp, q: q};
+        this.getOrders(this.userId, this.projType, params);
+      },
+      handleOrder (orderId, state) {
+        requests.UpdateOrderState(this.userId, this.type, orderId, {state: state}).then(res => {
+          this.$message.success('操作成功!')
+        })
+          .catch(error => {
+            this.$message.error(error.response.data.errorDesc);
+          });
+      },
+      handleCurrentChange (currentPage) {
+        let edge = this.ipp*currentPage;
+        this.tableData = this.tableOrgData.slice(edge - this.ipp, edge);
+      },
     },
     created() {
-      this.$store.commit('SET_BREADCRUMBS', ['维修', '门店信息'])
-    }
+      this.$store.commit('SET_BREADCRUMBS', ['我的订单', '保养预约']);
+
+      this.userId = this.$cookies.get('userId');
+      this.projType = 1;
+      this.ipp = 4;
+      this.getOrders(this.userId, this.type, {ipp: this.ipp});
+    },
   };
 </script>
 

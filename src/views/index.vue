@@ -42,12 +42,12 @@
     background-color: #fff;
     color: #333;
     text-align: center;
-    line-height: 160px;
+    /*line-height: 160px;*/
 
     .main-content {
-      margin:10px 10%;
-      padding: 20px 0;
-      width: 55%;
+      /*margin:10px 10%;*/
+      /*padding: 20px 0;*/
+      width: 100%;
     }
   }
 

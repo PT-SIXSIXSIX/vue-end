@@ -56,7 +56,7 @@
 
 <style lang="scss">
   .el-aside {
-    width: 230px !important;
+    width: 240px !important;
     background-color: #f5f7fa;
     color: #2f3033;
 
