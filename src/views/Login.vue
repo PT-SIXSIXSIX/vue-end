@@ -1,4 +1,8 @@
 <template>
+  <div>
+    <div class="sign-header">
+      登录
+    </div>
   <div class="sign-box">
     <el-form :model="loginForm" :rules="rules" ref="loginForm" class="loginForm">
       <el-form-item prop="phone">
@@ -15,7 +19,7 @@
             class="fa fa-lock el-input__icon"
             slot="prefix">
           </i>
-          <el-button slot="append"><router-link :to="{ path: 'home' }">忘记密码</router-link></el-button>
+          <el-button slot="append"><router-link :to="{ path: '/forgetPassword' }">忘记密码</router-link></el-button>
         </el-input>
       </el-form-item>
       <el-form-item>
@@ -25,6 +29,7 @@
     <div class="sign-options">
       没有帐号？<span><router-link :to="{ path: 'register' }">去注册</router-link></span>
     </div>
+  </div>
   </div>
 </template>
 
@@ -75,13 +80,7 @@
           let data = res.data;
           this.$cookies.set('userId', data.userId, globalConfig.cookieExpire);
           this.$cookies.set('accessToken', data.accessToken, globalConfig.cookieExpire);
-          this.$router.push('/home');
-        })
-        .catch(error => {
-          this.$message({
-            message: error.response.data.errorDesc,
-            type: 'error'
-          });
+          this.$router.push('/index');
         });
       }
     }

@@ -53,12 +53,13 @@
 
 <script>
   import requests from '../common/api';
+  import utils from '../common/utils';
   import globalConfig from '../config';
 
   export default {
     data: () => {
       let validateIdCard = (rule, value, callback) => {
-        if (!/(^\d{18}$)|(^\d{17}(\d|X|x)$)/.test(value)) {
+        if (!utils.verifyIdCard(value)) {
           callback(new Error('身份证号输入格式不正确'));
         } else {
           callback();
@@ -110,23 +111,23 @@
         });
       },
       register() {
-        let registerForm = Object.assign(this.registerTwoForm, this.$parent.registerForm);
+        let registerForm = utils.filterByKeys(
+          Object.assign(this.registerTwoForm, this.$parent.registerForm),
+          ['verifyCode', 'confirmPassword']
+        );
         console.log(registerForm);
         requests.Register(registerForm).then(res => {
           let data = res.data;
           this.$cookies.set('userId', data.userId, globalConfig.cookieExpire);
           this.$cookies.set('accessToken', data.accessToken, globalConfig.cookieExpire);
-          this.$router.push('/home');
-        })
-        .catch(error => {
-          this.$message.error(error.response.data.errorDesc);
+          this.$router.push('/index');
         });
       },
       handleHeadImageSuccess(res, file) {
-        this.registerTwoForm.picHeadUrl = URL.createObjectURL(file.raw);
+        this.registerTwoForm.picHeadUrl = res.url;
       },
       handleTailImageSuccess(res, file) {
-        this.registerTwoForm.picTailUrl = URL.createObjectURL(file.raw);
+        this.registerTwoForm.picTailUrl = res.url;
       },
       beforeImageUpload(file) {
         const isAllowed = globalConfig.allowedImageType.indexOf(file.type) >= 0;
