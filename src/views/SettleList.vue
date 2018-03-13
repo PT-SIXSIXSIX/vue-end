@@ -15,13 +15,18 @@
         <el-button type="primary" @click="querySettleList" plain>查询</el-button>
       </div>
     </el-col>
-    <el-col :span="20" :offset="1">
+    <el-col :span="22" :offset="1">
       <el-table
         ref="multipleTable"
         :data="tableData"
         tooltip-effect="dark"
         border
-        max-height="520">
+        max-height="520"
+        @selection-change="handleSelectionChange">
+        <el-table-column
+          type="selection"
+          min-width="10%">
+        </el-table-column>
         <el-table-column
           prop="setAccId"
           min-width="12%"
@@ -107,7 +112,15 @@
   export default {
     data() {
       return {
-        tableData: [],
+        tableData: [{
+          setAccId: '123123123',
+          companyName: '江苏兰达汽修服务有限公司',
+          driverName: '赵小强',
+          driverPhone: '123455678912',
+          tradeMoney: 500,
+          tradedAt: '2018-03-13',
+          state: 1
+        }],
         value7: [],
         totalItems: 0,
         currentPage: 1,
