@@ -130,7 +130,7 @@
       this.userId = this.$cookies.get('userId');
       this.projType = 1;
       this.ipp = 4;
-      this.getOrders(this.userId, this.type, {ipp: this.ipp});
+      this.getOrders(this.userId, this.projType, {ipp: this.ipp});
     },
   };
 </script>
