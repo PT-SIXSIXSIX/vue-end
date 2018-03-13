@@ -6,7 +6,7 @@ const request = (url, options={}, method='get', _this, backEnd=true, autoCatch=t
   if (!url.endsWith('login') && !url.endsWith('register') && !url.endsWith('forgetPassword')) {
     headers = {
         'X-YKAT-USER-ID': window.$cookies.get('userId'),
-        'X-YIAT-ACCESS-TOKEN': window.$cookies.get('accessToken')
+        'X-YKAT-ACCESS-TOKEN': window.$cookies.get('accessToken')
     }
   }
 
