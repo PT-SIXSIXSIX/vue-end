@@ -1,11 +1,10 @@
 <template>
-  <div>
-    <div class="sign-header">
-      找回密码
-    </div>
   <div class="sign-box">
     <router-view></router-view>
     <el-form :model="forgetForm" v-model="forgetForm" :rules="rules" ref="forgetForm" v-if="this.$route.path === '/forgetPassword'">
+      <div class="sign-header">
+        找回密码
+      </div>
       <el-form-item prop="phone">
         <el-input type="text" placeholder="手机号码" v-model="forgetForm.phone" >
         </el-input>
@@ -30,7 +29,6 @@
         <el-button id="forget" @click="submitForm('forgetForm')" style="width:100%" type="primary">下一步</el-button>
       </el-form-item>
     </el-form>
-  </div>
   </div>
 </template>
 
