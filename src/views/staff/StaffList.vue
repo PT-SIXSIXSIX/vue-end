@@ -80,7 +80,7 @@
     methods: {
       searchStaff() {
         let q = { q: this.q };
-        this.getStaffs(q);
+        this.getStaffs(this.currentPage, q);
       },
       handleDelete(staffId, row) {
         this.dialogVisible = false;

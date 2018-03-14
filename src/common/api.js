@@ -126,6 +126,10 @@ const axiosRechargeDeposit = (userId, data, _this) => {
   return request('/users/' + userId + '/deposit', data, 'post', _this);
 };
 
+const axiosGetMoneyRecords = (userId, params, _this) => {
+  return request('/users/' + userId + '/receive_money_records', params, 'get', _this);
+};
+
 let requests = {
   Login: axiosLogin,
   Register: axiosRegister,
@@ -147,6 +151,7 @@ let requests = {
   AddStaff: axiosAddStaff,
   GetDeposits: axiosGetDeposits,
   RechargeDeposit: axiosRechargeDeposit,
+  GetMoneyRecords: axiosGetMoneyRecords,
 };
 
 export default requests;
