@@ -17,7 +17,6 @@ import TrailTask from './views/order/TrailTask'
 import BankCardList from './views/account/BankCardlist'
 import AddBankCard from './views/account/AddBankCard'
 import DepositList from './views/account/DepositList'
-import RechargeDeposit from './views/account/RechargeDeposit'
 import MoneyRecord from './views/account/MoneyRecord'
 // staff
 import StaffList from  './views/staff/StaffList'
@@ -52,7 +51,6 @@ let routes = [
       { path: 'account/bankCardList', name: 'BankCardList', component: BankCardList },
       { path: 'account/addBankCard', name: 'AddBankCard', component: AddBankCard },
       { path: 'account/depositList', name: 'DepositList', component: DepositList },
-      { path: 'account/rechargeDeposit', name: 'RechargeDeposit', component: RechargeDeposit },
       { path: 'account/moneyRecord', name: 'MoneyRecord', component: MoneyRecord },
       { path: 'staffList', name: 'StaffList', component: StaffList },
       { path: 'addStaff', name: 'AddStaff', component: AddStaff },
