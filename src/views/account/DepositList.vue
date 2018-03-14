@@ -19,7 +19,7 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :offset="6">
+        <el-col :span="6" :offset="15">
           <i class="el-icon-caret-bottom" v-if="showDatePicker === false"></i>
           <i class="el-icon-caret-top" v-else></i>
           <span v-on:click="showDatePicker = !showDatePicker">日期查询</span>
@@ -39,7 +39,7 @@
         </el-col>
       </el-row>
     </div>
-    <el-col :span="18" :offset="2">
+    <el-col :span="18" :offset="3">
       <el-table
         :data="deposits"
         tooltip-effect="dark"

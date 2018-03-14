@@ -1,15 +1,37 @@
 <template>
   <div>
-    <el-row style="padding: 10px" :gutter="5">
-      <el-col :span="3" :offset="1">
-        <el-button @click="batchSettle" plain>批量结算</el-button>
-      </el-col>
-      <el-col :span="6" :offset="13">
-        <el-input placeholder="请输入内容" v-model="input5" class="input-with-select">
-          <el-button slot="append" type="primary" icon="el-icon-search" @click="querySettleList"></el-button>
-        </el-input>
-      </el-col>
-    </el-row>
+    <div class="content-top">
+      <el-row>
+        <el-col :span="3" :offset="1">
+          <el-button @click="batchSettle" plain>批量结算</el-button>
+        </el-col>
+        <el-col :span="8" :offset="10">
+          <el-input placeholder="根据状态查询" v-model="queryContent" class="input-with-select">
+            <el-button slot="append" type="primary" @click="querySettleList" icon="el-icon-search"></el-button>
+          </el-input>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="7" :offset="16">
+          <i class="el-icon-caret-bottom" v-if="showDatePicker === false"></i>
+          <i class="el-icon-caret-top" v-else></i>
+          <span v-on:click="showDatePicker = !showDatePicker">日期查询</span>
+        </el-col>
+      </el-row>
+      <el-row v-if="showDatePicker">
+        <el-col :span="8" :offset="14">
+          <el-date-picker
+            v-model="queryTime"
+            type="daterange"
+            unlink-panels
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            value-format="timestamp">
+          </el-date-picker>
+        </el-col>
+      </el-row>
+    </div>
     <el-col :span="22" :offset="1">
       <el-table
         ref="multipleTable"
@@ -103,8 +125,9 @@
         totalItems: 0,
         currentPage: 1,
         optionValue: '',
-        input1: '',
-        input2: '',
+        queryContent: '',
+        queryTime: '',
+        showDatePicker: false,
         options: [{
           value: 0,
           label: '联保中'
@@ -140,7 +163,7 @@
         });
       },
       querySettleList () {
-        let q = this.input1;
+        let q = {content: this.queryContent};
         this.getSettleList(this.ipp, 1, q);
       },
       handleCurrentChange (currentPage) {

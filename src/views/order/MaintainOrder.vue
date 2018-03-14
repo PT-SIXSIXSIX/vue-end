@@ -13,7 +13,6 @@
           value-format="timestamp">
         </el-date-picker>
         <el-button type="primary" icon="el-icon-search"  @click="queryOrder"></el-button>
-        <el-button type="primary" @click="queryOrder" icon="el-icon-search"></el-button>
       </div>
     </el-col>
     <el-col :span="20" :offset="2" style="padding-top: 15px">
