@@ -1,6 +1,6 @@
 <template>
   <el-col :span="12" :offset="6">
-    <el-form ref="form" :model="form" :rules="rules" label-width="100px" size="small" label-position="left" style="padding-top: 20px">
+    <el-form ref="form" :model="form" :rules="rules" label-width="120px" size="small" label-position="left" style="padding-top: 10px">
       <el-form-item label="门店名" prop="companyName">
         <el-input type="text" v-model="form.companyName"></el-input>
       </el-form-item>
@@ -23,7 +23,7 @@
         <el-input v-model="form.serviceType"></el-input>
       </el-form-item>
       <el-form-item label="身份证照片">
-        <el-col :span="11">
+        <el-col :span="12">
           <el-upload
             :action="uploadUrl"
             name="image"
@@ -36,7 +36,7 @@
             <div class="el-upload__text">身份证正面照</div>
           </el-upload>
         </el-col>
-        <el-col :span="11">
+        <el-col :span="12">
           <el-upload
             :action="uploadUrl"
             name="image"
@@ -82,12 +82,8 @@
             if (res.data.phoneExist) {
               callback(new Error('手机号码已被注册'));
             } else {
-              callback();
+              callback();r
             }
-          }).catch(error => {
-            console.log(error);
-            this.$message.error('发生未知错误');
-            callback();
           });
         }
       };

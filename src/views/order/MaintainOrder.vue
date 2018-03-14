@@ -100,10 +100,7 @@
           this.totalItems = res.data.maxPage * this.ipp;
           this.tableOrgData = JSON.parse(JSON.stringify(res.data.records));
           this.tableData = this.tableOrgData.slice(0, this.ipp);
-        })
-          .catch(error => {
-            this.$message.error(error.response.data.errorDesc);
-          });
+        });
       },
       queryOrder () {
         let q = 'time:' + this.value7[0] + '-' + this.value7[1];
@@ -113,10 +110,7 @@
       handleOrder (orderId, state) {
         requests.UpdateOrderState(this.userId, this.type, orderId, {state: state}, this).then(res => {
           this.$message.success('操作成功!')
-        })
-          .catch(error => {
-            this.$message.error(error.response.data.errorDesc);
-          });
+        });
       },
       handleCurrentChange (currentPage) {
         let edge = this.ipp*currentPage;

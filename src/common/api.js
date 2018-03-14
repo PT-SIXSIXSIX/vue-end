@@ -22,9 +22,15 @@ const request = (url, options={}, method='get', _this, backEnd=true, autoCatch=t
 
   return autoCatch ? promise.catch(error => {
     if (!error.response || !error.response.hasOwnProperty('data')) {
-      _this.$message.error('发生未知错误');
+      _this.$notify.error({
+        title: '错误',
+        message: '发生未知错误'
+      })
     } else {
-      _this.$message.error(error.response.data.errorDesc);
+      _this.$notify.error({
+        title: '错误',
+        message: error.response.data.errorDesc
+      });
     }
   }) : promise;
 };
@@ -86,6 +92,7 @@ const axiosGetStaffList = (userId, params, _this) => {
 
 const axiosGetBankCards = (userId, params, _this) => {
   return request('/users/' + userId + '/bankcards', _this);
+};
 
 const axiosDeleteStaff = (userId, staffId, params, _this) => {
   return request('/users/' + userId + '/staffs/' + staffId, params, 'delete', _this);
