@@ -6,7 +6,7 @@ const request = (url, options={}, method='get', _this, backEnd=true, autoCatch=t
   if (!url.endsWith('login') && !url.endsWith('register') && !url.endsWith('forgetPassword')) {
     headers = {
         'X-YKAT-USER-ID': window.$cookies.get('userId'),
-        'X-YIAT-ACCESS-TOKEN': window.$cookies.get('accessToken')
+        'X-YKAT-ACCESS-TOKEN': window.$cookies.get('accessToken')
     }
   }
 
@@ -85,6 +85,10 @@ const axiosGetStaffList = (userId, params, _this) => {
   return request('/users/' + userId + '/staffs', params, 'get', _this);
 };
 
+const axiosGetBankCards = (userId, params, _this) => {
+  return request('/users/' + userId + '/bankcards', _this);
+};
+
 let requests = {
   Login: axiosLogin,
   Register: axiosRegister,
@@ -99,6 +103,7 @@ let requests = {
   GetSettleList: axiosGetSettleList,
   BatchSettle: axiosBatchSettle,
   GetStaffList: axiosGetStaffList,
+  GetBankCards: axiosGetBankCards,
 };
 
 export default requests;

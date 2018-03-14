@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-col :span="18" :offset="2">
+    <el-col :span="12" :offset="11">
       <div class="block" style="padding-bottom: 5px;">
         <el-date-picker
           v-model="value7"
@@ -15,12 +15,11 @@
         <el-button type="primary" @click="queryOrder" plain>查询</el-button>
       </div>
     </el-col>
-    <el-col :span="20" :offset="1">
+    <el-col :span="20" :offset="2" style="padding-top: 15px">
       <el-table
         ref="multipleTable"
         :data="tableData"
         tooltip-effect="dark"
-        border
         max-height="520">
         <el-table-column
           prop="orderId"
@@ -62,7 +61,7 @@
         </el-table-column>
       </el-table>
     </el-col>
-    <el-col :span="16" :offset="3">
+    <el-col :span="10" :offset="14">
       <div class="block" style="padding-top: 10px;">
         <el-pagination
           @current-change="handleCurrentChange"

@@ -1,21 +1,15 @@
 <template>
   <div>
-    <el-col :span="18" :offset="1">
-      <el-row style="padding: 10px" :gutter="20">
-        <el-col :span="5">
-          <el-input
-            placeholder="查询..."
-            v-model="input1">
-          </el-input>
-        </el-col>
-        <el-col :span="3" :offset="2">
-          <el-button type="primary" @click="querySettleList" plain>查询</el-button>
-        </el-col>
-        <el-col :span="3" :offset="2">
-          <el-button type="success" @click="batchSettle" plain>批量结算</el-button>
-        </el-col>
-      </el-row>
-    </el-col>
+    <el-row style="padding: 10px" :gutter="5">
+      <el-col :span="3" :offset="1">
+        <el-button @click="batchSettle" plain>批量结算</el-button>
+      </el-col>
+      <el-col :span="6" :offset="13">
+        <el-input placeholder="请输入内容" v-model="input5" class="input-with-select">
+          <el-button slot="append" type="primary" icon="el-icon-search" @click="getSettleList"></el-button>
+        </el-input>
+      </el-col>
+    </el-row>
     <el-col :span="22" :offset="1">
       <el-table
         ref="multipleTable"
@@ -95,7 +89,7 @@
         </el-table-column>
       </el-table>
     </el-col>
-    <el-col :span="16" :offset="3">
+    <el-col :span="12" :offset="12">
       <div class="block" style="padding-top: 10px;">
         <el-pagination
           @current-change="handleCurrentChange"
@@ -199,6 +193,10 @@
   };
 </script>
 
-<style scoped>
-
+<style lang="scss">
+  .el-input-group__append, .el-input-group__prepend {
+    border-color: #409EFF !important;
+    background-color: #409EFF !important;
+    color: #fff !important;
+  }
 </style>

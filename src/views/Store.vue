@@ -1,25 +1,25 @@
 <template>
-  <el-col :span="16" :offset="4">
-    <el-form ref="form" :model="form" label-width="100px" size="small" label-position="left" style="padding-top: 20px">
-      <el-form-item label="门店名">
+  <el-col :span="12" :offset="6">
+    <el-form ref="form" :model="form" :rules="rules" label-width="100px" size="small" label-position="left" style="padding-top: 20px">
+      <el-form-item label="门店名" prop="companyName">
         <el-input type="text" v-model="form.companyName"></el-input>
       </el-form-item>
-      <el-form-item label="门店位置">
+      <el-form-item label="门店位置" prop="location">
         <el-input v-model="form.location"></el-input>
       </el-form-item>
-      <el-form-item label="店主姓名">
+      <el-form-item label="店主姓名" prop="name">
         <el-input v-model="form.name"></el-input>
       </el-form-item>
-      <el-form-item label="店主手机号">
+      <el-form-item label="店主手机号" prop="phone">
         <el-input v-model="form.phone"></el-input>
       </el-form-item>
-      <el-form-item label="备用手机号">
+      <el-form-item label="备用手机号" prop="reserverPhone">
         <el-input v-model="form.reservePhone"></el-input>
       </el-form-item>
-      <el-form-item label="身份证号">
+      <el-form-item label="身份证号" prop="idCard">
         <el-input v-model="form.idCard"></el-input>
       </el-form-item>
-      <el-form-item label="门店服务项目">
+      <el-form-item label="门店服务项目" prop="serviceType">
         <el-input v-model="form.serviceType"></el-input>
       </el-form-item>
       <el-form-item label="身份证照片">
@@ -51,7 +51,7 @@
         </el-col>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">保存</el-button>
+        <el-button type="primary" @click="onSubmit('form')">保存</el-button>
         <el-button @click="resetForm('form')">重置</el-button>
       </el-form-item>
     </el-form>
@@ -61,10 +61,36 @@
 <script>
   import requests from '../common/api';
   import globalConfig from '../config';
+  import utils from '../common/utils';
   export default {
     beforeCreate (){
     },
     data() {
+      let validateIdCard = (rule, value, callback) => {
+        if (!utils.verifyIdCard(value)) {
+          callback(new Error('身份证号输入格式不正确'));
+        } else {
+          callback();
+        }
+      };
+      let validatePhone = (rule, value, callback) => {
+        if (!utils.verifyPhone(value)) {
+          callback(new Error('手机号码输入格式不正确'));
+        } else {
+          callback();
+          requests.VerifyPhone({verifyPhone: value}).then(res => {
+            if (res.data.phoneExist) {
+              callback(new Error('手机号码已被注册'));
+            } else {
+              callback();
+            }
+          }).catch(error => {
+            console.log(error);
+            this.$message.error('发生未知错误');
+            callback();
+          });
+        }
+      };
       return {
         form: {
           companyName: '',
@@ -76,13 +102,45 @@
           location: '',
           serviceType: '',
         },
+        rules: {
+          companyName: [
+            { required: true, message: '请输入门店名', trigger: 'blur' }
+          ],
+          location: [
+            { required: true, message: '请输入门店位置', trigger: 'blur' }
+          ],
+          name: [
+            { required: true, message: '请输入店主姓名', trigger: 'blur' }
+          ],
+          phone: [
+            { required: true, message: '请输入店主手机号', trigger: 'blur' },
+            { validator: validatePhone, trigger: 'blur' }
+          ],
+          reservePhone: [
+            { required: true, message: '请输入备用手机号', trigger: 'blur' }
+          ],
+          idCard: [
+            { required: true, message: '请输入身份证号', trigger: 'blur' },
+            {validator: validateIdCard, trigger: 'blur'}
+          ],
+          serviceType: [
+            { required: true, message: '请输入门店服务项目', trigger: 'blur' }
+          ]
+        },
         uploadUrl: globalConfig.nodeJsUrl + '/images'
       }
     },
     methods: {
-      onSubmit() {
+      onSubmit(formName) {
         console.log('submit!');
-        requests.PutStoreInfo(this.userId, this.form, this);
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            requests.PutStoreInfo(this.userId, this.form, this);
+          } else {
+            console.log('error submit!!');
+            this.$message.error('请输入正确信息');
+          }
+        });
       },
       resetForm(formName) {
         console.log('reset:', this.oldForm);
