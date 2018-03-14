@@ -1,11 +1,13 @@
 <template>
-  <el-col :span="18" :offset="3">
+  <div>
     <div class="content-top">
+      <el-col :span="8" :offset="12" style="margin-bottom: 20px;">
       <el-input placeholder="根据名字或者手机号查询" v-model="q" class="input-with-select">
         <el-button slot="append" type="primary" @click="searchStaff" icon="el-icon-search"></el-button>
       </el-input>
+      </el-col>
     </div>
-    <div class="content-middle">
+    <el-col :span="18" :offset="2">
         <el-table
           :data="staffs"
           stripe
@@ -43,18 +45,20 @@
             </template>
           </el-table-column>
         </el-table>
-    </div>
+    </el-col>
 
-    <div class="content-bottom">
-      <el-pagination
-        @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        :page-size="ipp"
-        :total="totalItems"
-        layout="prev, pager, next, jumper">
-      </el-pagination>
+    <div class="block" style="padding-top: 10px;">
+      <el-col :span="12" :offset="11">
+        <el-pagination
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-size="ipp"
+          :total="totalItems"
+          layout="prev, pager, next, jumper">
+        </el-pagination>
+      </el-col>
     </div>
-  </el-col>
+  </div>
 </template>
 
 <script>
@@ -87,50 +91,26 @@
           });
         });
       },
-      getStaffs(q={}) {
-        let pageParams = { page: this.currentPage, ipp: this.ipp };
+      getStaffs(currentPage, q={}) {
+        let pageParams = { page: currentPage, ipp: this.ipp };
         let params = Object.assign(pageParams, q);
         requests.GetStaffList(this.userId, params, this).then(res => {
           this.totalItems = res.data.maxPage * this.ipp;
-          this.tableOrgData = res.data.staffs;
-          this.staffs = [{
-            staffId: 1,
-            name: '小黄',
-            phone: '13290046270'
-          }];
+          this.staffs = res.data.staffs;
         })
       },
       handleCurrentChange (currentPage) {
-        let edge = this.ipp * currentPage;
-        this.staffs = this.tableOrgData.slice(edge - this.ipp, edge);
+        this.getStaffs(currentPage);
       },
     },
     created() {
       this.$store.commit('SET_BREADCRUMBS', ['店员管理', '店员列表']);
 
-      this.getStaffs();
+      this.getStaffs(this.currentPage);
     }
   }
 </script>
 
 <style lang="scss">
-  .content-top {
-    .el-input {
-      float: right;
-      width: 300px;
-      margin-bottom: 20px;
 
-      .el-input-group__append {
-        background-color: #409EFF !important;
-        color: #fff !important;
-        border: 1px solid #409EFF !important;
-      }
-    }
-  }
-
-  .content-bottom {
-    margin-top: 20px;
-    margin-right: 30px;
-    float: right;
-  }
 </style>
