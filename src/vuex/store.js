@@ -9,7 +9,9 @@ Vue.use(Vuex)
 const state = {
   count: 0,
   breadcrumbs: []
-}
+};
+
+// const
 
 // 定义所需的 mutations
 const mutations = {

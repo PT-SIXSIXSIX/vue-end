@@ -6,7 +6,7 @@
           <el-button @click="batchSettle" plain>批量结算</el-button>
         </el-col>
         <el-col :span="8" :offset="10">
-          <el-input placeholder="根据状态查询" v-model="queryContent" class="input-with-select">
+          <el-input placeholder="模糊查询" v-model="queryContent" class="input-with-select">
             <el-button slot="append" type="primary" @click="querySettleList" icon="el-icon-search"></el-button>
           </el-input>
         </el-col>
@@ -117,6 +117,8 @@
 
 <script>
   import requests from '../common/api';
+  import utils from '../common/utils';
+
   export default {
     data() {
       return {
@@ -126,7 +128,7 @@
         currentPage: 1,
         optionValue: '',
         queryContent: '',
-        queryTime: '',
+        queryTime: [],
         showDatePicker: false,
         options: [{
           value: 0,
@@ -163,8 +165,11 @@
         });
       },
       querySettleList () {
-        let q = {content: this.queryContent};
-        this.getSettleList(this.ipp, 1, q);
+        let q = {
+          content: this.queryContent ? this.queryContent : '',
+          time: this.queryTime[0] + '-' + this.queryTime[1]
+        };
+        this.getSettleList(this.ipp, 1, utils.genSearchParams(q));
       },
       handleCurrentChange (currentPage) {
         this.getSettleList(this.ipp, currentPage);

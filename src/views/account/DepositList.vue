@@ -2,10 +2,13 @@
   <div>
     <div class="content-top">
       <el-row v-if="loaded && depositThreshold > currentDeposit">
-        <el-col :span="5">
-          <el-button type="plain" @click="dialogFormVisible = true">补足</el-button>
+        <el-col :span="5" :offset="2">
+          <div class="fl" style="font-size: 15px;height: 30px;line-height: 30px;border-bottom: 1px solid #d1d1d1;">
+            当前保证金余额: {{ currentDeposit }}元,
+            <span style="color: #409EFF;cursor: pointer;" @click="dialogFormVisible = true">去补足</span>
+          </div>
         </el-col>
-        <el-col :span="8" :offset="7">
+        <el-col :span="8" :offset="5">
           <el-input placeholder="根据状态查询" v-model="state" class="input-with-select">
             <el-button slot="append" type="primary" @click="searchDeposit" icon="el-icon-search"></el-button>
           </el-input>
@@ -92,24 +95,24 @@
       </div>
     </el-col>
     <el-dialog title="补足保证金" :visible.sync="dialogFormVisible">
-      <el-form :model="depositForm" :rules="rules">
-        <div style="text-align: center">
-          需要补足至少{{ depositThreshold - currentDeposit }}元
-        </div>
+      <el-form :model="depositForm" :rules="rules" ref="depositForm" v-model="depositForm">
         <el-form-item label="补足金额" :label-width="formLabelWidth" prop="money">
           <el-input v-model="depositForm.money" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button @click="submitForm('depositForm')" type="primary">补足</el-button>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="submitForm('depositForm')">确 定</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
-  import globalConfig from '../../config'
+  import globalConfig from '../../config';
   import requests from '../../common/api';
   import utils from '../../common/utils';
 
@@ -119,7 +122,8 @@
         if (!/\d+/.test(value)) {
           callback(new Error('请输入数字'))
         } else if (parseInt(value) < (this.depositThreshold - this.currentDeposit)) {
-          callback(new Error('输入金额不足'))
+          let need = this.depositThreshold - this.currentDeposit;
+          callback(new Error('输入金额不足，至少' + need + '元'))
         } else {
           callback();
         }
@@ -167,8 +171,10 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             requests.RechargeDeposit(this.userId, this.depositForm, this).then(res => {
-              this.$message.success('补足成功');
-              this.$router.push('/index/account/depositList')
+              if (res) {
+                this.$message.success('补足成功');
+                this.$router.push('/index/account/depositList')
+              }
             });
             return true;
           } else {

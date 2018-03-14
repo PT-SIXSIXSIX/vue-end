@@ -1,21 +1,35 @@
 <template>
   <div>
-    <el-col :span="12" :offset="11">
-      <div class="block" style="padding-bottom: 5px;">
-        <el-date-picker
-          v-model="value7"
-          type="daterange"
-          align="right"
-          unlink-panels
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          value-format="timestamp">
-        </el-date-picker>
-        <el-button type="primary" icon="el-icon-search"  @click="queryOrder"></el-button>
-      </div>
-    </el-col>
-    <el-col :span="20" :offset="2" style="padding-top: 15px">
+    <div class="content-top">
+      <el-row>
+        <el-col :span="8" :offset="14">
+          <el-input placeholder="模糊查询" v-model="queryContent" class="input-with-select">
+            <el-button slot="append" type="primary" @click="queryOrder" icon="el-icon-search"></el-button>
+          </el-input>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="7" :offset="16">
+          <i class="el-icon-caret-bottom" v-if="showDatePicker === false"></i>
+          <i class="el-icon-caret-top" v-else></i>
+          <span v-on:click="showDatePicker = !showDatePicker">日期查询</span>
+        </el-col>
+      </el-row>
+      <el-row v-if="showDatePicker">
+        <el-col :span="8" :offset="14">
+          <el-date-picker
+            v-model="queryTime"
+            type="daterange"
+            unlink-panels
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            value-format="timestamp">
+          </el-date-picker>
+        </el-col>
+      </el-row>
+    </div>
+    <el-col :span="20" :offset="2" style="padding-top: 5px">
       <el-table
         ref="multipleTable"
         :data="tableData"
@@ -72,13 +86,16 @@
 
 <script>
   import requests from '../../common/api';
+  import utils from '../../common/utils'
   export default {
     data() {
       return {
         tableData: [],
-        value7: [],
+        queryContent: '',
+        queryTime: [],
         totalItems: 0,
         currentPage: 1,
+        showDatePicker: false
       };
     },
     methods: {
@@ -98,8 +115,11 @@
         });
       },
       queryOrder () {
-        let q = 'time:' + this.value7[0] + '-' + this.value7[1];
-        let params = {ipp: this.ipp, q: q};
+        let q = {
+          content: this.queryContent,
+          time: this.queryTime
+        };
+        let params = {ipp: this.ipp, q: utils.genSearchParams(q)};
         this.getOrders(this.userId, this.projType, params);
       },
       handleOrder (rowIndex, orderId, state) {
