@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-col :span="6" :offset="17">
-      <el-button  type="text" icon="el-icon-plus">添加新卡</el-button>
+      <el-button  type="text" icon="el-icon-plus" @click="addCards">添加新卡</el-button>
     </el-col>
     <el-col :span="18" :offset="3">
       <el-table
@@ -29,6 +29,14 @@
           prop="bankName"
           label="银行名称">
         </el-table-column>
+        <el-table-column
+          label="操作"
+          fixed="right"
+          show-overflow-tooltip>
+          <template slot-scope="scope">
+            <el-button @click="deleteCard(scope.$index, scope.row.cardId)" type="text">解除绑定</el-button>
+          </template>
+        </el-table-column>
       </el-table>
     </el-col>
   </div>
@@ -37,26 +45,43 @@
 <script>
   import requests from '../../common/api';
   export default {
-    beforeCreate (){
-    },
     data() {
       return {
-        tableData:[{
-          cardId: '1234456678832452345',
-          ownerIdCard: '123456789012345678',
-          ownerName: '黄钰萧',
-          type: '储蓄卡',
-          bankName: '中国银行',
-        }]
+        tableData:[]
       }
     },
     methods: {
+      addCards () {
+        this.$router.push('/index/account/addBankCard')
+      },
+      deleteCard (rowIndex, cardId) {
+        this.$confirm('此操作将解除绑定该银行卡, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          console.log(this.tableData);
+          requests.DeleteBankCard(this.userId, {"cardIds": [cardId]}, this).then(res => {
+            this.tableData.pop(rowIndex);
+            this.$message({
+              type: 'success',
+              message: '解除绑定成功!'
+            });
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消解除绑定'
+          });
+        });
+      }
     },
     created() {
       this.$store.commit('SET_BREADCRUMBS', ['我的账户', '银行卡']);
 
       this.userId = this.$cookies.get('userId');
       requests.GetBankCards(this.userId, {}, this).then(res => {
+        console.log(res.data.bankcards);
         this.tableData = res.data.bankcards;
       });
     }

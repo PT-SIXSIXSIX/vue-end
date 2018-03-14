@@ -27,7 +27,7 @@
             <i class="fa fa-google-wallet"></i>
             <span>我的账户</span>
           </template>
-          <el-menu-item index="/index/account/bankList">银行卡</el-menu-item>
+          <el-menu-item index="/index/account/bankCardList">银行卡</el-menu-item>
           <el-menu-item index="/index/account/depositList">保证金</el-menu-item>
           <el-menu-item index="/index/account/moneyRecord">收账记录</el-menu-item>
         </el-submenu>
@@ -91,3 +91,4 @@
   }
 
 </style>
+

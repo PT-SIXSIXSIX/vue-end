@@ -6,7 +6,7 @@
       </el-col>
       <el-col :span="6" :offset="13">
         <el-input placeholder="请输入内容" v-model="input5" class="input-with-select">
-          <el-button slot="append" type="primary" icon="el-icon-search" @click="getSettleList"></el-button>
+          <el-button slot="append" type="primary" icon="el-icon-search" @click="querySettleList"></el-button>
         </el-input>
       </el-col>
     </el-row>
@@ -15,65 +15,56 @@
         ref="multipleTable"
         :data="tableData"
         tooltip-effect="dark"
-        border
         max-height="520">
         <el-table-column
           type="selection"
-          align="center"
+          :selectable="handleSelect"
           min-width="10%">
         </el-table-column>
         <el-table-column
           prop="setAccId"
-          min-width="15%"
-          align="center"
+          min-width="18%"
           label="结算单号">
         </el-table-column>
         <el-table-column
           prop="companyName"
           min-width="20%"
-          align="center"
           label="服务网点">
         </el-table-column>
         <el-table-column
           prop="driverName"
           min-width="10%"
-          align="center"
           label="付款人"
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
           prop="driverPhone"
           min-width="18%"
-          align="center"
           label="手机号码"
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
           prop="tradedAt"
           min-width="15%"
-          align="center"
           label="付款时间"
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
           prop="tradeMoney"
-          min-width="10%"
-          align="center"
+          min-width="8%"
           label="付款金额"
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
           prop="commission"
-          min-width="10%"
-          align="center"
+          min-width="8%"
           label="平台佣金"
           :formatter="commissionFormatter"
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
           prop="actualMoney"
-          min-width="10%"
-          align="center"
+          min-width="8%"
           label="实际到账"
           :formatter="actualFormatter"
           show-overflow-tooltip>
@@ -81,7 +72,6 @@
         <el-table-column
           prop="state"
           min-width="12%"
-          align="center"
           :formatter="stateFormatter"
           label="状态"
           fixed="right"
@@ -141,54 +131,56 @@
       actualFormatter (row){
         return row.tradeMoney * 0.9;
       },
-      getSettleList (userId, type, params) {
-        console.log('req');
-        requests.GetSettleList(userId, type, params).then(res => {
+      getSettleList (ipp, page=1, q='') {
+        let params = {ipp: ipp, page: page, q: q};
+        requests.GetSettleList(this.userId, params).then(res => {
           this.totalItems = res.data.maxPage * this.ipp;
           this.tableOrgData = JSON.parse(JSON.stringify(res.data.records));
           this.tableData = this.tableOrgData.slice(0, this.ipp);
-        })
-          .catch(error => {
-            this.$message.error(error.response.data.errorDesc);
-          });
+        });
       },
       querySettleList () {
         let q = this.input1;
-        let params = {ipp: this.ipp, q: q};
-        this.getSettleList(this.userId, this.projType, params);
+        this.getSettleList(this.ipp, 1, q);
       },
       handleCurrentChange (currentPage) {
-        let edge = this.ipp*currentPage;
-        this.tableData = this.tableOrgData.slice(edge - this.ipp, edge);
+        this.getSettleList(this.ipp, currentPage);
       },
-      // handleSelectionChange (value) {
-      //   console.log(value);
-      // },
       batchSettle (){
-        let selected = this.$refs.multipleTable.selection;
-        console.log(selected);
-        let data = {
-          setAccIds: []
-        };
-        for (let item in selected){
-          console.log(selected[item]);
-          data.setAccIds.push(selected[item].setAccId);
-        }
-        console.log(data);
-        requests.BatchSettle(this.userId, data, this);
+        this.$confirm('此操作将批量结算订单, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          let selected = this.$refs.multipleTable.selection;
+          let data = {
+            setAccIds: []
+          };
+          for (let item in selected){
+            data.setAccIds.push(selected[item].setAccId);
+          }
+          requests.BatchSettle(this.userId, 2, data, this).then(res => {
+            this.getSettleList(this.ipp);
+            this.$message.success('结算成功');
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消结算'
+          });
+        });
       },
-      // stateFilter (value, row, column) {
-      //   console.log(value, this.optionValue);
-      //   // return value == this.optionValue;
-      // },
+      handleSelect (row) {
+        return row.state !== 2;
+      },
     },
     created() {
       this.$store.commit('SET_BREADCRUMBS', ['结算管理']);
 
       this.userId = this.$cookies.get('userId');
       this.projType = 1;
-      this.ipp = 4;
-      this.getSettleList(this.userId, this.type, {ipp: this.ipp});
+      this.ipp = 7;
+      this.getSettleList(this.ipp);
     },
   };
 </script>

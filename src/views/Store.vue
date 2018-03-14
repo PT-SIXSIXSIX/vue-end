@@ -128,21 +128,18 @@
     },
     methods: {
       onSubmit(formName) {
-        console.log('submit!');
         this.$refs[formName].validate((valid) => {
           if (valid) {
             requests.PutStoreInfo(this.userId, this.form, this);
           } else {
-            console.log('error submit!!');
             this.$message.error('请输入正确信息');
           }
         });
       },
       resetForm(formName) {
-        console.log('reset:', this.oldForm);
         this.form = this.oldForm;
       },
-      handleHeadSuccess(res, file) {
+      handleHeadSuccess(res) {
         this.picHeadUrl = res.url;
         this.form.picHeadUrl = res.url;
         this.$message.success('上传成功!');
@@ -160,7 +157,7 @@
         }
         return isJPG && isLt5M;
       },
-      handleTailSuccess(res, file) {
+      handleTailSuccess(res) {
         this.picTailUrl = res.url;
         this.form.picTailUrl = res.url;
         this.$message.success('上传成功!');
@@ -178,7 +175,7 @@
         }
         return isJPG && isLt5M;
       },
-      handleError (err) {
+      handleError () {
         this.$message.error('图片上传失败');
       },
     },

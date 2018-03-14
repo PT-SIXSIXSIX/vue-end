@@ -23,7 +23,6 @@
     text-align: center;
     bottom: 0;
     padding: 24px 0;
-    background-color: #f1f1f1;
   }
 
   .ykat-links {

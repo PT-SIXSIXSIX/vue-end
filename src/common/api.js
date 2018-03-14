@@ -75,15 +75,15 @@ const axiosGetOrders = (userId, type, params, _this) => {
 };
 
 const axiosUpdateOrderState = (userId, type, orderId, data, _this) => {
-  return request('/users/' + userId + '/store/' + orderId, data, 'put', _this);
+  return request('/users/' + userId + '/orders/' + type + '/' + orderId, data, 'put', _this);
 };
 
 const axiosGetSettleList = (userId, params, _this) => {
-  return request('/users/' + userId + '/settle_account_records', params, 'get', _this);
+  return request('/users/' + userId + '/settleAccountRecords', params, 'get', _this);
 };
 
-const axiosBatchSettle = (userId, data, _this) => {
-  return request('/users/' + userId + '/sa', data, 'put', _this);
+const axiosBatchSettle = (userId, state, data, _this) => {
+  return request('/users/' + userId + '/sa?state=' + state, data, 'put', _this);
 };
 
 const axiosGetStaffList = (userId, params, _this) => {
@@ -91,7 +91,15 @@ const axiosGetStaffList = (userId, params, _this) => {
 };
 
 const axiosGetBankCards = (userId, params, _this) => {
-  return request('/users/' + userId + '/bankcards', _this);
+  return request('/users/' + userId + '/bankcards', params, 'get', _this);
+};
+
+const axiosAddBankCard = (userId, data, _this) => {
+  return request('/users/' + userId + '/bankcards', data, 'post', _this);
+};
+
+const axiosDeleteBankCard = (userId, data, _this) => {
+  return request('/users/' + userId + '/bankcards', data, 'delete', _this)
 };
 
 const axiosDeleteStaff = (userId, staffId, params, _this) => {
@@ -117,6 +125,8 @@ let requests = {
   BatchSettle: axiosBatchSettle,
   GetStaffList: axiosGetStaffList,
   GetBankCards: axiosGetBankCards,
+  AddBankCard: axiosAddBankCard,
+  DeleteBankCard: axiosDeleteBankCard,
   DeleteStaff: axiosDeleteStaff,
   AddStaff: axiosAddStaff,
 };

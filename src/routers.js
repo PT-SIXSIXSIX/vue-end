@@ -14,8 +14,8 @@ import MaintainTask from './views/order/MaintainTask'
 import RecoveryTask from './views/order/RecoveryTask'
 import TrailTask from './views/order/TrailTask'
 // account
-import BankList from './views/account/BankList'
-import AddBank from './views/account/AddBank'
+import BankCardList from './views/account/BankCardlist'
+import AddBankCard from './views/account/AddBankCard'
 import DepositList from './views/account/DepositList'
 import RechargeDeposit from './views/account/RechargeDeposit'
 import MoneyRecord from './views/account/MoneyRecord'
@@ -49,8 +49,8 @@ let routes = [
           { path: 'trailTask', name: 'TrailTask', component: TrailTask }
         ]
       },
-      { path: 'account/bankList', name: 'BankList', component: BankList },
-      { path: 'account/addBank', name: 'AddBank', component: AddBank },
+      { path: 'account/bankCardList', name: 'BankCardList', component: BankCardList },
+      { path: 'account/addBankCard', name: 'AddBankCard', component: AddBankCard },
       { path: 'account/depositList', name: 'DepositList', component: DepositList },
       { path: 'account/rechargeDeposit', name: 'RechargeDeposit', component: RechargeDeposit },
       { path: 'account/moneyRecord', name: 'MoneyRecord', component: MoneyRecord },
