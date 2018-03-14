@@ -111,3 +111,44 @@ a {
     cursor: pointer;
   }
 }
+
+.content-top {
+  .el-row:nth-child(2) {
+    margin-bottom: 10px;
+    margin-top: 5px;
+    font-size: 14px;
+    color: #d1d1d1;
+
+    .el-col {
+      cursor: pointer;
+
+      :hover {
+        color: #409EFF;
+      }
+
+      //.trans-picker-enter-active, .trans-picker-leave-active {
+      //  transition: all .3s ease;
+      //}
+      //
+      //.trans-picker-enter, .trans-picker-leave-to {
+      //  transform: translateY(30px);
+      //}
+    }
+
+  }
+
+  .el-input-group__append, .el-input-group__prepend {
+    border-color: #409EFF !important;
+    background-color: #409EFF !important;
+    color: #fff !important;
+  }
+
+  .el-date-editor--daterange.el-input__inner {
+    width: calc(100% - 57px) !important;
+    margin-right: 57px;
+  }
+
+  .el-row:last-child {
+    margin-bottom: 20px;
+  }
+}

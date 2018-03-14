@@ -12,7 +12,7 @@
           end-placeholder="结束日期"
           value-format="timestamp">
         </el-date-picker>
-        <el-button type="primary" @click="queryOrder" plain>查询</el-button>
+        <el-button type="primary" @click="queryOrder" icon="el-icon-search"></el-button>
       </div>
     </el-col>
     <el-col :span="20" :offset="2" style="padding-top: 15px">

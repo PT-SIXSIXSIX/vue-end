@@ -16,8 +16,17 @@ let filterByKeys = (obj, discardKeys) => {
   return newObj;
 };
 
+let genSearchParams = obj => {
+  let q = [];
+  for (let key in obj) {
+    q.push(key + ':' + obj[key].toString());
+  }
+  return q.join('+');
+};
+
 export default {
   verifyPhone,
   verifyIdCard,
   filterByKeys,
+  genSearchParams,
 };

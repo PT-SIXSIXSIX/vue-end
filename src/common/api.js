@@ -1,6 +1,9 @@
 import axios from 'axios';
 import globalConfig from '../config'
 
+// 超时阈值3秒
+axios.defaults.timeout = 3000;
+
 const request = (url, options={}, method='get', _this, backEnd=true, autoCatch=true) => {
   let headers = {};
   if (!url.endsWith('login') && !url.endsWith('register') && !url.endsWith('forgetPassword')) {
@@ -102,6 +105,14 @@ const axiosAddStaff = (userId, data, _this) => {
   return request('/users/' + userId + '/staffs', data, 'post', _this);
 };
 
+const axiosGetDeposits = (userId, params, _this) => {
+  return request('/users/' + userId + '/deposits', params, 'get', _this);
+};
+
+const axiosRechargeDeposit = (userId, data, _this) => {
+  return request('/users/' + userId + '/deposit', data, 'post', _this);
+};
+
 let requests = {
   Login: axiosLogin,
   Register: axiosRegister,
@@ -119,6 +130,8 @@ let requests = {
   GetBankCards: axiosGetBankCards,
   DeleteStaff: axiosDeleteStaff,
   AddStaff: axiosAddStaff,
+  GetDeposits: axiosGetDeposits,
+  RechargeDeposit: axiosRechargeDeposit,
 };
 
 export default requests;

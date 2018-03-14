@@ -9,6 +9,7 @@ let globalConfig = {
     '/forgetPassword', '/forgetPassword/two',
   ],
   itemPerPage: 7,
+  depositThreshold: 2000,
 };
 
 export default globalConfig;
