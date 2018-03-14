@@ -119,7 +119,7 @@
           ['verifyCode', 'confirmPassword']
         );
         console.log(registerForm);
-        requests.Register(registerForm).then(res => {
+        requests.Register(registerForm, this).then(res => {
           let data = res.data;
           this.$cookies.set('userId', data.userId, globalConfig.cookieExpire);
           this.$cookies.set('accessToken', data.accessToken, globalConfig.cookieExpire);

@@ -21,7 +21,6 @@ const request = (url, options={}, method='get', _this, backEnd=true, autoCatch=t
   );
 
   return autoCatch ? promise.catch(error => {
-    console.log(error);
     if (!error.response || !error.response.hasOwnProperty('data')) {
       _this.$message.error('发生未知错误');
     } else {
@@ -53,8 +52,8 @@ const axiosGetSmsCode = (params, _this) => {
   return request('/sms', params, 'get', _this, false);
 };
 
-const axiosVerifySmsCode = (params, _this) => {
-  return request('/sms/verify', params, 'get', _this, false, false);
+const axiosVerifySmsCode = (params) => {
+  return request('/sms/verify', params, 'get', null, false, false);
 };
 
 const axiosGetStoreInfo = (userId, params, _this) => {
@@ -87,6 +86,13 @@ const axiosGetStaffList = (userId, params, _this) => {
 
 const axiosGetBankCards = (userId, params, _this) => {
   return request('/users/' + userId + '/bankcards', _this);
+
+const axiosDeleteStaff = (userId, staffId, params, _this) => {
+  return request('/users/' + userId + '/staffs/' + staffId, params, 'delete', _this);
+};
+
+const axiosAddStaff = (userId, data, _this) => {
+  return request('/users/' + userId + '/staffs', data, 'post', _this);
 };
 
 let requests = {
@@ -104,6 +110,8 @@ let requests = {
   BatchSettle: axiosBatchSettle,
   GetStaffList: axiosGetStaffList,
   GetBankCards: axiosGetBankCards,
+  DeleteStaff: axiosDeleteStaff,
+  AddStaff: axiosAddStaff,
 };
 
 export default requests;

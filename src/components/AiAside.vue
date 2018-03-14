@@ -31,13 +31,17 @@
           <el-menu-item index="/index/account/depositList">保证金</el-menu-item>
           <el-menu-item index="/index/account/moneyRecord">收账记录</el-menu-item>
         </el-submenu>
+        <el-submenu index="4">
+          <template slot="title">
+            <i class="fa fa-users"></i>
+            <span>店员管理</span>
+          </template>
+          <el-menu-item index="/index/staffList">店员列表</el-menu-item>
+          <el-menu-item index="/index/addStaff">添加店员</el-menu-item>
+        </el-submenu>
         <el-menu-item index="/index/settleList">
           <i class="fa fa-money"></i>
           <span slot="title">结算管理</span>
-        </el-menu-item>
-        <el-menu-item index="/index/staffList">
-          <i class="fa fa-users"></i>
-          <span slot="title">店员管理</span>
         </el-menu-item>
       </el-menu>
     </el-col>
@@ -59,6 +63,10 @@
     width: 240px !important;
     background-color: #f5f7fa;
     color: #2f3033;
+
+    * {
+      font-size: 15px !important;
+    }
 
     .logo-wrapper {
       line-height: 90px;

@@ -59,16 +59,12 @@
           callback(new Error('手机号码输入格式不正确'));
         } else {
           callback();
-          requests.VerifyPhone({verifyPhone: value}).then(res => {
+          requests.VerifyPhone({verifyPhone: value}, this).then(res => {
             if (res.data.phoneExist) {
               callback(new Error('手机号码已被注册'));
             } else {
               callback();
             }
-          }).catch(error => {
-            console.log(error);
-            this.$message.error('发生未知错误');
-            callback();
           });
         }
       };
@@ -157,7 +153,7 @@
             console.log('validating success');
             if (!this.timer) {
               // 获取验证码
-              requests.GetSmsCode({phone: this.registerForm.phone}).then(res => {
+              requests.GetSmsCode({phone: this.registerForm.phone}, this).then(res => {
                 console.log(res);
                 this.count = 60;
                 this.show = false;

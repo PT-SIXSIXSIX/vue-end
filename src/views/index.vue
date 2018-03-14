@@ -51,6 +51,10 @@
     text-align: center;
     /*line-height: 160px;*/
 
+    * {
+      font-size: 15px !important;
+    }
+
     .main-content {
       margin:20px 0;
       /*padding: 20px 0;*/
