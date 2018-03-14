@@ -24,10 +24,15 @@ const request = (url, options={}, method='get', _this, backEnd=true, autoCatch=t
   );
 
   return autoCatch ? promise.catch(error => {
-    if (!error.response || !error.response.hasOwnProperty('data')) {
+    if (!error.response) {
       _this.$notify.error({
         title: '错误',
         message: '发生未知错误'
+      })
+    } else if (!error.response.data.hasOwnProperty('errorDesc')) {
+      _this.$notify.error({
+        title: '错误',
+        message: error.response.statusText
       })
     } else {
       _this.$notify.error({
