@@ -64,6 +64,10 @@
     background-color: #f5f7fa;
     color: #2f3033;
 
+    * {
+      font-size: 15px !important;
+    }
+
     .logo-wrapper {
       line-height: 90px;
       text-align: center;

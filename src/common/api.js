@@ -52,8 +52,8 @@ const axiosGetSmsCode = (params, _this) => {
   return request('/sms', params, 'get', _this, false);
 };
 
-const axiosVerifySmsCode = (params, _this) => {
-  return request('/sms/verify', params, 'get', _this, false, false);
+const axiosVerifySmsCode = (params) => {
+  return request('/sms/verify', params, 'get', null, false, false);
 };
 
 const axiosGetStoreInfo = (userId, params, _this) => {

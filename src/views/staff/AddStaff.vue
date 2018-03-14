@@ -1,6 +1,6 @@
 <template>
-  <el-col :span="16" :offset="4">
-    <el-form ref="staffForm" :rules="rules" :model="staffForm" label-width="100px" label-position="left" style="padding-top: 20px">
+  <el-col :span="12" :offset="4">
+    <el-form ref="staffForm" :rules="rules" :model="staffForm" label-width="120px" label-position="left" style="padding-top: 20px">
       <el-form-item label="店员姓名" prop="name">
         <el-input type="text" v-model="staffForm.name"></el-input>
       </el-form-item>
