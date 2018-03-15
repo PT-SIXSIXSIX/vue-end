@@ -130,7 +130,9 @@
       onSubmit(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            requests.PutStoreInfo(this.userId, this.form, this);
+            requests.PutStoreInfo(this.userId, this.form, this).then(res => {
+              this.$message.success('保存成功');
+            });
           } else {
             this.$message.error('请输入正确信息');
           }

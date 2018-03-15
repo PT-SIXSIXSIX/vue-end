@@ -36,7 +36,7 @@
         max-height="520">
         <el-table-column
           prop="revMonId"
-          min-width="10%"
+          min-width="15%"
           label="序号">
         </el-table-column>
         <el-table-column
