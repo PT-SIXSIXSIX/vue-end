@@ -165,11 +165,15 @@
         });
       },
       querySettleList () {
-        let q = {
-          content: this.queryContent ? this.queryContent : '',
-          time: this.queryTime[0] + '-' + this.queryTime[1]
-        };
-        this.getSettleList(this.ipp, 1, utils.genSearchParams(q));
+        if (this.queryContent || (this.queryTime[0] && this.queryTime[1])){
+          let q = {
+            content: this.queryContent ? this.queryContent : '',
+            time: this.queryTime[0] + '-' + this.queryTime[1]
+          };
+          this.getSettleList(this.ipp, 1, utils.genSearchParams(q));
+        } else {
+          this.$message.error('请输入需要查询的信息！');
+        }
       },
       handleCurrentChange (currentPage) {
         this.getSettleList(this.ipp, currentPage);

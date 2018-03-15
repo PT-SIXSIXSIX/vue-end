@@ -115,12 +115,18 @@
         });
       },
       queryOrder () {
-        let q = {
-          content: this.queryContent,
-          time: this.queryTime
-        };
-        let params = {ipp: this.ipp, q: utils.genSearchParams(q)};
-        this.getOrders(this.userId, this.projType, params);
+        console.log(this.queryContent, this.queryTime);
+        if (this.queryContent || (this.queryTime[0] && this.queryTime[1])){
+          console.log('yes');
+          let q = {
+            content: this.queryContent,
+            time: this.queryTime
+          };
+          let params = {ipp: this.ipp, q: utils.genSearchParams(q)};
+          this.getOrders(this.userId, this.projType, params)
+        } else {
+          this.$message.error('请输入需要查询的信息！');
+        }
       },
       handleOrder (rowIndex, orderId, state) {
         let opr = {
