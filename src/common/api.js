@@ -123,7 +123,7 @@ const axiosGetDeposits = (userId, params, _this) => {
 };
 
 const axiosRechargeDeposit = (userId, data, _this) => {
-  return request('/users/' + userId + '/deposit', data, 'post', _this);
+  return request('/users/' + userId + '/deposits', data, 'post', _this);
 };
 
 const axiosGetMoneyRecords = (userId, params, _this) => {
