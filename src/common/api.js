@@ -27,7 +27,7 @@ const request = (url, options={}, method='get', _this, backEnd=true, autoCatch=t
     if (!error.response) {
       _this.$notify.error({
         title: '错误',
-        message: '发生未知错误'
+        message: '请求失败，请检查网络'
       })
     } else if (!error.response.data.hasOwnProperty('errorDesc')) {
       _this.$notify.error({
@@ -123,7 +123,7 @@ const axiosGetDeposits = (userId, params, _this) => {
 };
 
 const axiosRechargeDeposit = (userId, data, _this) => {
-  return request('/users/' + userId + '/deposit', data, 'post', _this);
+  return request('/users/' + userId + '/deposits', data, 'post', _this);
 };
 
 const axiosGetMoneyRecords = (userId, params, _this) => {

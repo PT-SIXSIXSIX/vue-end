@@ -97,15 +97,12 @@
     <el-dialog title="补足保证金" :visible.sync="dialogFormVisible">
       <el-form :model="depositForm" :rules="rules" ref="depositForm" v-model="depositForm">
         <el-form-item label="补足金额" :label-width="formLabelWidth" prop="money">
-          <el-input v-model="depositForm.money" auto-complete="off"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button @click="submitForm('depositForm')" type="primary">补足</el-button>
+          <el-input type="number" v-model="depositForm.money" auto-complete="off"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        <el-button type="primary" @click="submitForm('depositForm')">补 足</el-button>
       </div>
     </el-dialog>
   </div>
@@ -170,10 +167,11 @@
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
+            this.depositForm.money = parseInt(this.depositForm.money);
             requests.RechargeDeposit(this.userId, this.depositForm, this).then(res => {
               if (res) {
                 this.$message.success('补足成功');
-                this.$router.push('/index/account/depositList')
+                location.reload();
               }
             });
             return true;
