@@ -118,12 +118,10 @@
         console.log(this.queryContent, this.queryTime);
         if (this.queryContent || (this.queryTime[0] && this.queryTime[1])){
           console.log('yes');
-          let q = {
-            content: this.queryContent,
-            time: this.queryTime
-          };
-          let params = {ipp: this.ipp, q: utils.genSearchParams(q)};
-          this.getOrders(this.userId, this.projType, params)
+          let q = {};
+          if (this.queryContent) q['content'] = this.queryContent;
+          if (this.queryTime[0] && this.queryTime[1]) q['time'] = this.queryTime[0] + '-' + this.queryTime[1];
+          this.getOrders(this.ipp, 1, utils.genSearchParams(q));
         } else {
           this.$message.error('请输入需要查询的信息！');
         }
