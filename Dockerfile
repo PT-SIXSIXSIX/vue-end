@@ -1,4 +1,4 @@
-FROM daocloud.io/ubuntu:16.10
+FROM daocloud.io/nginx
 
 MAINTAINER Jiawen Guan <gjw.jesus@qq.com>
 
@@ -8,9 +8,7 @@ WORKDIR /code
 
 ADD . /code
 
-RUN apt-get update && apt-get install nginx -y
-
-RUN cp conf/default.conf /etc/nginx/conf.d/
+COPY dist/* /usr/share/nginx/html/
 
 CMD service nginx start
 
