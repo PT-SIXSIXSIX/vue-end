@@ -97,7 +97,17 @@
     <el-dialog title="补足保证金" :visible.sync="dialogFormVisible">
       <el-form :model="depositForm" :rules="rules" ref="depositForm" v-model="depositForm">
         <el-form-item label="补足金额" :label-width="formLabelWidth" prop="money">
-          <el-input type="number" v-model="depositForm.money" auto-complete="off"></el-input>
+          <el-input type="number" v-model="depositForm.money" auto-complete="off" style="float: left;width: 50% !important;"></el-input>
+        </el-form-item>
+        <el-form-item label="银行卡" :label-width="formLabelWidth">
+          <el-select v-model="depositForm.cardId" placeholder="选择银行卡" style="float: left;width: 50%;">
+            <el-option
+              v-for="item in options"
+              :key="item.cardId"
+              :label="item.bankName"
+              :value="item.cardId">
+            </el-option>
+          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -139,8 +149,10 @@
         depositThreshold: globalConfig.depositThreshold,
         formLabelWidth: '120px',
         loaded: false,
+        options: [],
         depositForm: {
-          money: ''
+          money: '',
+          cardId: ''
         },
         rules: {
           money: [
@@ -162,6 +174,12 @@
           this.deposits = res.data.records;
           this.currentDeposit = res.data.currentDeposit;
           this.loaded = true;
+        });
+      },
+      getBankCards() {
+        requests.GetBankCards(this.userId, {}, this).then(res => {
+          this.options = utils.mapByKeys(res.data.bankcards, ['bankName', 'cardId']);
+          console.log(this.options);
         });
       },
       submitForm(formName) {
@@ -189,7 +207,7 @@
             q['state'] = '1';
         }
         if (this.time[0] !== undefined && this.time[1] !== undefined)
-          q['time'] = 'time:' + this.time[0] + '-' + this.time[1];
+          q['time'] = this.time[0] + '-' + this.time[1];
         this.getDeposits(this.currentPage, {q: utils.genSearchParams(q)});
       },
       handleCurrentChange (currentPage) {
@@ -200,6 +218,7 @@
       this.$store.commit('SET_BREADCRUMBS', ['我的账户', '保证金']);
 
       this.getDeposits(this.currentPage);
+      this.getBankCards();
     },
   };
 </script>
