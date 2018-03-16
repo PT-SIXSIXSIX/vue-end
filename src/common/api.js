@@ -23,7 +23,7 @@ const request = (url, options={}, method='get', _this, backEnd=true, autoCatch=t
       }, {[key]: options})
   );
 
-  return autoCatch ? promise.catch(error => {
+  let cPromise = autoCatch ? promise.catch(error => {
     if (!error.response) {
       _this.$notify.error({
         title: '错误',
@@ -41,6 +41,13 @@ const request = (url, options={}, method='get', _this, backEnd=true, autoCatch=t
       });
     }
   }) : promise;
+
+  return cPromise.then(res => {
+    return new Promise(resolve => {
+      if (res !== undefined)
+        resolve(res);
+    })
+  });
 };
 
 // java
