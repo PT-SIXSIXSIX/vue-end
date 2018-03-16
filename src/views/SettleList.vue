@@ -158,7 +158,7 @@
       },
       getSettleList (ipp, page=1, q='') {
         let params = {ipp: ipp, page: page, q: q};
-        requests.GetSettleList(this.userId, params).then(res => {
+        requests.GetSettleList(this.userId, params, this).then(res => {
           this.totalItems = res.data.maxPage * this.ipp;
           this.tableOrgData = JSON.parse(JSON.stringify(res.data.records));
           this.tableData = this.tableOrgData.slice(0, this.ipp);
