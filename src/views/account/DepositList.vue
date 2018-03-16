@@ -189,7 +189,7 @@
             q['state'] = '1';
         }
         if (this.time[0] !== undefined && this.time[1] !== undefined)
-          q['time'] = 'time:' + this.time[0] + '-' + this.time[1];
+          q['time'] = this.time[0] + '-' + this.time[1];
         this.getDeposits(this.currentPage, {q: utils.genSearchParams(q)});
       },
       handleCurrentChange (currentPage) {
