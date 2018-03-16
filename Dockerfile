@@ -8,7 +8,7 @@ WORKDIR /code
 
 ADD . /code
 
-COPY dist/* /usr/share/nginx/html/
+RUN cp -r dist/* /usr/share/nginx/html/
 
 CMD service nginx start
 
