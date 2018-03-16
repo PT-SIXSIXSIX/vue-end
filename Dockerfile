@@ -12,5 +12,5 @@ RUN apt update && apt install nginx -y
 
 RUN cp -r dist/* /usr/share/nginx/html/
 
-CMD nginx -g "daemon off;"
+CMD service nginx restart && nginx -g "daemon off;"
 
