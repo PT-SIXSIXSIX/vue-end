@@ -52,7 +52,7 @@ const request = (url, options={}, method='get', _this, backEnd=true, autoCatch=t
 
 // java
 const axiosLogin = (data, _this) => {
-  return request('/login', data, 'post', _this);
+  return request('/login/', data, 'post', _this);
 };
 
 const axiosRegister = (data, _this) => {
@@ -137,6 +137,14 @@ const axiosGetMoneyRecords = (userId, params, _this) => {
   return request('/users/' + userId + '/receive_money_records', params, 'get', _this);
 };
 
+const axiosGetDrivers = (params, _this) => {
+  return request('/drivers', params, 'get', _this);
+};
+
+const axiosAddOrder = (userId, type, data, _this) => {
+  return request('/users/' + userId + '/orders/' + type, data, 'post', _this);
+};
+
 let requests = {
   Login: axiosLogin,
   Register: axiosRegister,
@@ -159,6 +167,8 @@ let requests = {
   GetDeposits: axiosGetDeposits,
   RechargeDeposit: axiosRechargeDeposit,
   GetMoneyRecords: axiosGetMoneyRecords,
+  GetDrivers: axiosGetDrivers,
+  AddOrder: axiosAddOrder,
 };
 
 export default requests;

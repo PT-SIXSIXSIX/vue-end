@@ -21,6 +21,7 @@
             v-model="queryTime"
             type="daterange"
             unlink-panels
+            :default-time="defaultTime"
             range-separator="至"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
@@ -41,7 +42,7 @@
           label="维修预约单号">
         </el-table-column>
         <el-table-column
-          prop="createdAt"
+          prop="orderedAt"
           min-width="10%"
           label="预约时间">
         </el-table-column>
@@ -64,8 +65,8 @@
           min-width="10%"
           show-overflow-tooltip>
           <template slot-scope="scope">
-            <el-button @click="handleOrder(scope.$index, scope.row.orderId, 1)" type="text">接受</el-button>
-            <el-button @click="handleOrder(scope.$index, scope.row.orderId, -1)" type="text" >拒绝</el-button>
+            <el-button @click="handleOrder(scope.$index, scope.row.orderId, 1)" type="text" :disabled="scope.row.state == 1">接受</el-button>
+            <el-button @click="handleOrder(scope.$index, scope.row.orderId, -1)" type="text" :disabled="scope.row.state == -1">拒绝</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -94,6 +95,7 @@
         queryContent: '',
         queryTime: [],
         totalItems: 0,
+        defaultTime: ["00:00:00", "23:59:59"],
         currentPage: 1,
         showDatePicker: false
       };

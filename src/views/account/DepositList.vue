@@ -34,6 +34,7 @@
             v-model="time"
             type="daterange"
             unlink-panels
+            :default-time="defaultTime"
             range-separator="至"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
@@ -144,6 +145,7 @@
         state: '',
         totalItems: 0,
         currentPage: 1,
+        defaultTime: ["00:00:00", "23:59:59"],
         ipp: globalConfig.itemPerPage,
         showDatePicker: false,
         dialogFormVisible: false,
