@@ -9,6 +9,7 @@ import index from './views/index'
 import Store from './views/Store'
 // order
 import Order from './views/order/Order'
+import AddOrder from './views/order/AddOrder'
 import MaintainOrder from './views/order/MaintainOrder'
 import MaintainTask from './views/order/MaintainTask'
 import RecoveryTask from './views/order/RecoveryTask'
@@ -42,6 +43,7 @@ let routes = [
         name: 'Order',
         component: Order,
         children: [
+          { path: 'addOrder', name: AddOrder, component: AddOrder },
           { path: 'maintainOrder', name: 'MaintainOrder', component: MaintainOrder },
           { path: 'maintainTask', name: 'MaintainTask', component: MaintainTask },
           { path: 'recoveryTask', name: 'RecoveryTask', component: RecoveryTask },

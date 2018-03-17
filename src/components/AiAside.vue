@@ -17,6 +17,7 @@
             <i class="fa fa-truck"></i>
             <span>我的订单</span>
           </template>
+          <el-menu-item index="/index/order/addOrder">添加订单</el-menu-item>
           <el-menu-item index="/index/order/maintainOrder">保养预约</el-menu-item>
           <el-menu-item index="/index/order/maintainTask">维修任务</el-menu-item>
           <el-menu-item index="/index/order/recoveryTask">抢修任务</el-menu-item>
