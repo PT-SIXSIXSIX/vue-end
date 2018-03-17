@@ -145,6 +145,18 @@ const axiosAddOrder = (userId, type, data, _this) => {
   return request('/users/' + userId + '/orders/' + type, data, 'post', _this);
 };
 
+const axiosGetProjects = (userId, params, _this) => {
+  return request('/projects/' + userId + '/getProjects', params, 'get', _this);
+};
+
+const axiosAddProject = (userId, data, _this) => {
+  return request('/projects/' + userId + '/addProject', data, 'post', _this);
+};
+
+const axiosDeleteProject = (userId, data, _this) => {
+  return request('/projects/' + userId + '/deleteProjects', data, 'delete', _this);
+};
+
 let requests = {
   Login: axiosLogin,
   Register: axiosRegister,
@@ -169,6 +181,9 @@ let requests = {
   GetMoneyRecords: axiosGetMoneyRecords,
   GetDrivers: axiosGetDrivers,
   AddOrder: axiosAddOrder,
+  GetProjects: axiosGetProjects,
+  AddProject: axiosAddProject,
+  DeleteProject: axiosDeleteProject,
 };
 
 export default requests;

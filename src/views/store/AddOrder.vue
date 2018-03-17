@@ -20,15 +20,22 @@
             style="width: 100%;"></el-date-picker>
       </el-form-item>
       <el-form-item  label="项目类型" prop="projectType">
-        <el-select  style="width: 100%" v-model="form.projectType" placeholder="请选择项目类型">
+        <el-select  style="width: 100%" v-model="form.projectType" placeholder="请选择项目类型" @change="onChange">
           <el-option label="保养预约" value="1"></el-option>
           <el-option label="维修任务" value="2"></el-option>
           <el-option label="抢修任务" value="3"></el-option>
           <el-option label="拖车任务" value="4"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="项目描述" prop="projectDescp">
-        <el-input type="textarea" v-model="form.projectDescp"></el-input>
+      <el-form-item label="项目内容" prop="projectId">
+        <el-select style="width: 100%" v-model="form.projectId" placeholder="请选择">
+          <el-option
+            v-for="item in descpOptions"
+            :key="item.id"
+            :label="item.descp"
+            :value="item.id">
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit('form')">添加</el-button>
@@ -47,9 +54,11 @@
             driverId: [],
             orderedAt: '',
             projectType: '',
-            projectDescp: '',
+            projectId: '',
           },
           driverOptions: [],
+          descpOptions: [],
+          descpData: [],
           rules: {
             driverId: [{
               required: true, message: '请选择司机', trigger: 'blur'
@@ -60,7 +69,7 @@
             projectType: [{
               required: true, message: '请选择项目类型', trigger: 'blur'
             }],
-            projectDescp: [{
+            projectId: [{
               required: true, message: '请输入项目描述', trigger: 'blur'
             }],
           }
@@ -70,7 +79,9 @@
         onSubmit (formName) {
           this.$refs[formName].validate((valid) => {
             if (valid) {
-              requests.AddOrder(this.userId, this.form.projectType, this.form, this).then( res => {
+              let tmpType = this.form.projectType;
+              delete this.form.projectType;
+              requests.AddOrder(this.userId, tmpType, this.form, this).then( res => {
                 this.$message.success('添加订单成功！');
               })
             } else {
@@ -80,10 +91,14 @@
         },
         resetForm (formName) {
           this.$refs[formName].resetFields();
+        },
+        onChange (value) {
+          this.descpOptions = this.descpData[value];
+          console.log(value, this.descpOptions, this.descpData);
         }
       },
       created () {
-        this.$store.commit('SET_BREADCRUMBS', ['我的订单', '添加订单']);
+        this.$store.commit('SET_BREADCRUMBS', ['门店管理', '添加订单']);
         this.userId = this.$cookies.get('userId');
 
         requests.GetDrivers({}, this).then(res => {
@@ -92,6 +107,20 @@
           });
           console.log(this.list);
           this.driverOptions = this.list;
+        });
+
+        requests.GetProjects(this.userId, {}, this).then(res => {
+          let tmpData = {1: [], 2: [], 3: [], 4: []};
+          let tmpRes = res.data.projects;
+          for (let item in tmpRes){
+            for (let i in tmpData){
+              if (i == tmpRes[item].type){
+                tmpData[i].push(tmpRes[item]);
+              }
+            }
+          }
+          console.log(tmpData);
+          this.descpData = tmpData;
         });
       }
     };

@@ -59,9 +59,9 @@
 </template>
 
 <script>
-  import requests from '../common/api';
-  import globalConfig from '../config';
-  import utils from '../common/utils';
+  import requests from '../../common/api';
+  import globalConfig from '../../config/index';
+  import utils from '../../common/utils';
   export default {
     beforeCreate (){
     },
@@ -182,7 +182,7 @@
       },
     },
     created() {
-      this.$store.commit('SET_BREADCRUMBS', ['我的门店', '门店信息']);
+      this.$store.commit('SET_BREADCRUMBS', ['门店管理', '我的门店']);
 
       this.userId = this.$cookies.get('userId');
       requests.GetStoreInfo(this.userId, {}, this).then(res => {

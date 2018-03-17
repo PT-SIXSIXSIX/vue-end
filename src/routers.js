@@ -6,10 +6,11 @@ import ForgetPassword from './views/ForgetPassword'
 import ForgetPasswordTwo from './views/ForgetPassswordTwo'
 
 import index from './views/index'
-import Store from './views/Store'
+import Store from './views/store/Store'
+import AddOrder from './views/store/AddOrder'
+import ProjectList from './views/store/ProjectList'
 // order
 import Order from './views/order/Order'
-import AddOrder from './views/order/AddOrder'
 import MaintainOrder from './views/order/MaintainOrder'
 import MaintainTask from './views/order/MaintainTask'
 import RecoveryTask from './views/order/RecoveryTask'
@@ -37,13 +38,21 @@ let routes = [
     component: index,
     redirect: '/index/store',
     children: [
-      { path: 'store', name: 'Store', component: Store },
+      {
+        path: 'store',
+        name: 'Store',
+        component: Store,
+        // children:
+        // [
+        //   { path: 'addOrder', name: 'AddOrder', component: AddOrder },
+        //   { path: 'addProject', name: 'ProjectList', component: ProjectList },
+        // ]
+      },
       {
         path: 'order',
         name: 'Order',
         component: Order,
         children: [
-          { path: 'addOrder', name: AddOrder, component: AddOrder },
           { path: 'maintainOrder', name: 'MaintainOrder', component: MaintainOrder },
           { path: 'maintainTask', name: 'MaintainTask', component: MaintainTask },
           { path: 'recoveryTask', name: 'RecoveryTask', component: RecoveryTask },
@@ -57,6 +66,8 @@ let routes = [
       { path: 'staffList', name: 'StaffList', component: StaffList },
       { path: 'addStaff', name: 'AddStaff', component: AddStaff },
       { path: 'settleList', name: 'SettleList', component: SettleList },
+      { path: 'store/addOrder', name: 'AddOrder', component: AddOrder },
+      { path: 'store/projectList', name: 'ProjectList', component: ProjectList },
     ]
   },
   {
