@@ -104,8 +104,10 @@
             <el-option
               v-for="item in options"
               :key="item.cardId"
-              :label="item.bankName"
+              :label="item.cardId"
               :value="item.cardId">
+              <span>{{ item.bankName }}</span>
+              <span>{{ item.cardId }}</span>
             </el-option>
           </el-select>
         </el-form-item>
