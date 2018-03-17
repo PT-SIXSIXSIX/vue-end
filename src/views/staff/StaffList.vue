@@ -13,11 +13,6 @@
           stripe
           style="width: 100%">
           <el-table-column
-            prop="staffId"
-            label="店员序号"
-            width="100">
-          </el-table-column>
-          <el-table-column
             prop="name"
             label="店员姓名"
             width="180">
