@@ -52,7 +52,7 @@ const request = (url, options={}, method='get', _this, backEnd=true, autoCatch=t
 
 // java
 const axiosLogin = (data, _this) => {
-  return request('/login', data, 'post', _this);
+  return request('/login/', data, 'post', _this);
 };
 
 const axiosRegister = (data, _this) => {

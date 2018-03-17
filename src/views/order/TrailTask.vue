@@ -21,6 +21,7 @@
             v-model="queryTime"
             type="daterange"
             unlink-panels
+            :default-time="defaultTime"
             range-separator="至"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
@@ -94,6 +95,7 @@
         queryContent: '',
         queryTime: [],
         totalItems: 0,
+        defaultTime: ["00:00:00", "23:59:59"],
         currentPage: 1,
         showDatePicker: false
       };
