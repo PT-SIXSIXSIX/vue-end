@@ -165,6 +165,18 @@ const axiosBatchDeleteArticle = (userId, data, _this) => {
   return request('/users/' + userId + '/articles', data, 'delete', _this);
 };
 
+const axiosGetProjects = (userId, params, _this) => {
+  return request('/projects/' + userId + '/getProjects', params, 'get', _this);
+};
+
+const axiosAddProject = (userId, data, _this) => {
+  return request('/projects/' + userId + '/addProject', data, 'post', _this);
+};
+
+const axiosDeleteProject = (userId, data, _this) => {
+  return request('/projects/' + userId + '/deleteProjects', data, 'delete', _this);
+};
+
 let requests = {
   Login: axiosLogin,
   Register: axiosRegister,
@@ -194,6 +206,9 @@ let requests = {
   UpdateArticle: axiosUpdateArticle,
   GetArticle: axiosGetArticle,
   BatchDeleteArticle: axiosBatchDeleteArticle,
+  GetProjects: axiosGetProjects,
+  AddProject: axiosAddProject,
+  DeleteProject: axiosDeleteProject,
 };
 
 export default requests;

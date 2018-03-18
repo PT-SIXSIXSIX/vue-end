@@ -8,16 +8,24 @@
         default-active="/index/store"
         :router="router"
         class="nav-menu-vertical">
-        <el-menu-item index="/index/store">
-          <i class="fa fa-university"></i>
-          <span slot="title">我的门店</span>
-        </el-menu-item>
+        <!--<el-menu-item index="/index/store">-->
+          <!--<i class="fa fa-university"></i>-->
+          <!--<span slot="title">门店管理</span>-->
+        <!--</el-menu-item>-->
+        <el-submenu index="1">
+          <template slot="title">
+            <i class="fa fa-truck"></i>
+            <span>门店管理</span>
+          </template>
+          <el-menu-item index="/index/store">我的门店</el-menu-item>
+          <el-menu-item index="/index/store/addOrder">添加订单</el-menu-item>
+          <el-menu-item index="/index/store/projectList">项目列表</el-menu-item>
+        </el-submenu>
         <el-submenu index="2">
           <template slot="title">
             <i class="fa fa-truck"></i>
             <span>我的订单</span>
           </template>
-          <el-menu-item index="/index/order/addOrder">添加订单</el-menu-item>
           <el-menu-item index="/index/order/maintainOrder">保养预约</el-menu-item>
           <el-menu-item index="/index/order/maintainTask">维修任务</el-menu-item>
           <el-menu-item index="/index/order/recoveryTask">抢修任务</el-menu-item>
