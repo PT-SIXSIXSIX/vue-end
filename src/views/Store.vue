@@ -29,7 +29,7 @@
             name="image"
             :show-file-list="false"
             :on-success="handleHeadSuccess"
-            :on-error="handleError"
+            :on-error="handleImageFail"
             :before-upload="beforeHeadUpload">
             <img v-if="form.picHeadUrl" :src="form.picHeadUrl" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -42,7 +42,7 @@
             name="image"
             :show-file-list="false"
             :on-success="handleTailSuccess"
-            :on-error="handleError"
+            :on-error="handleImageFail"
             :before-upload="beforeTailUpload">
             <img v-if="form.picTailUrl" :src="form.picTailUrl" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -164,6 +164,13 @@
         this.form.picTailUrl = res.url;
         this.$message.success('上传成功!');
       },
+      handleImageFail(err) {
+        let error = eval('(' + err.message + ')');
+        this.$notify.error({
+          title: '错误',
+          message: error.errorDesc
+        });
+      },
       beforeTailUpload(file) {
         const isJPG = file.type === 'image/jpeg';
         const isPNG = file.type === 'image/png';
@@ -176,9 +183,6 @@
           this.$message.error('上传头像图片大小不能超过 5MB!');
         }
         return isJPG && isLt5M;
-      },
-      handleError () {
-        this.$message.error('图片上传失败');
       },
     },
     created() {

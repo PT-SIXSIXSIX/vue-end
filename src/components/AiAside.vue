@@ -44,6 +44,10 @@
           <i class="fa fa-money"></i>
           <span slot="title">结算管理</span>
         </el-menu-item>
+        <el-menu-item index="/index/articleList">
+          <i class="fa fa-book"></i>
+          <span slot="title">知识库管理</span>
+        </el-menu-item>
       </el-menu>
     </el-col>
   </el-aside>

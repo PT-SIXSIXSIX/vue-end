@@ -24,6 +24,10 @@ import StaffList from  './views/staff/StaffList'
 import AddStaff from './views/staff/AddStaff'
 // settle
 import SettleList from './views/SettleList'
+// article
+import ArticleList from './views/article/articleList'
+import AddArticle from './views/article/addArticle'
+import UpdateArticle from './views/article/updateArticle'
 
 let routes = [
   {
@@ -57,6 +61,9 @@ let routes = [
       { path: 'staffList', name: 'StaffList', component: StaffList },
       { path: 'addStaff', name: 'AddStaff', component: AddStaff },
       { path: 'settleList', name: 'SettleList', component: SettleList },
+      { path: 'articleList', name: 'ArticleList', component: ArticleList },
+      { path: 'addArticle', name: 'AddArticle', component: AddArticle },
+      { path: 'updateArticle/:articleId', name: 'UpdateArticle', component: UpdateArticle },
     ]
   },
   {

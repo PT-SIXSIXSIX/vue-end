@@ -145,6 +145,26 @@ const axiosAddOrder = (userId, type, data, _this) => {
   return request('/users/' + userId + '/orders/' + type, data, 'post', _this);
 };
 
+const axiosGetArticleList = (userId, params, _this) => {
+  return request('/users/' + userId + '/articles', params, 'get', _this);
+};
+
+const axiosAddArticle = (userId, data, _this) => {
+  return request('/users/' + userId + '/articles', data, 'post', _this);
+};
+
+const axiosGetArticle = (userId, articleId, params, _this) => {
+  return request('/users/' + userId + '/articles/' + articleId, params, 'get', _this);
+};
+
+const axiosUpdateArticle = (userId, articleId, data, _this) => {
+  return request('/users/' + userId + '/articles/' + articleId, data, 'put', _this);
+};
+
+const axiosBatchDeleteArticle = (userId, data, _this) => {
+  return request('/users/' + userId + '/articles', data, 'delete', _this);
+};
+
 let requests = {
   Login: axiosLogin,
   Register: axiosRegister,
@@ -169,6 +189,11 @@ let requests = {
   GetMoneyRecords: axiosGetMoneyRecords,
   GetDrivers: axiosGetDrivers,
   AddOrder: axiosAddOrder,
+  GetArticles: axiosGetArticleList,
+  AddArticle: axiosAddArticle,
+  UpdateArticle: axiosUpdateArticle,
+  GetArticle: axiosGetArticle,
+  BatchDeleteArticle: axiosBatchDeleteArticle,
 };
 
 export default requests;

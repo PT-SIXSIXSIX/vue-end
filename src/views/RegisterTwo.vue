@@ -20,6 +20,7 @@
             :action="uploadUrl"
             :show-file-list="false"
             :on-success="handleHeadImageSuccess"
+            :on-error="handleImageFail"
             :before-upload="beforeImageUpload">
             <img v-if="registerTwoForm.picHeadUrl" :src="registerTwoForm.picHeadUrl" class="image">
             <i v-else class="el-icon-plus image-uploader-icon"></i>
@@ -36,6 +37,7 @@
             :action="uploadUrl"
             :show-file-list="false"
             :on-success="handleTailImageSuccess"
+            :on-error="handleImageFail"
             :before-upload="beforeImageUpload">
             <img v-if="registerTwoForm.picTailUrl" :src="registerTwoForm.picTailUrl" class="image">
             <i v-else class="el-icon-plus image-uploader-icon"></i>
@@ -131,6 +133,13 @@
       },
       handleTailImageSuccess(res, file) {
         this.registerTwoForm.picTailUrl = res.url;
+      },
+      handleImageFail(err) {
+        let error = eval('(' + err.message + ')');
+        this.$notify.error({
+          title: '错误',
+          message: error.errorDesc
+        });
       },
       beforeImageUpload(file) {
         const isAllowed = globalConfig.allowedImageType.indexOf(file.type) >= 0;

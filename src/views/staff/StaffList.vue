@@ -74,8 +74,7 @@
     },
     methods: {
       searchStaff() {
-        let q = { q: this.q };
-        this.getStaffs(this.currentPage, q);
+        this.getStaffs(this.currentPage, this.q);
       },
       handleDelete(staffId, row) {
         this.dialogVisible = false;
@@ -86,9 +85,8 @@
           });
         });
       },
-      getStaffs(currentPage, q={}) {
-        let pageParams = { page: currentPage, ipp: this.ipp };
-        let params = Object.assign(pageParams, q);
+      getStaffs(currentPage, q='') {
+        let params = {ipp: this.ipp, page: currentPage, q: q};
         requests.GetStaffList(this.userId, params, this).then(res => {
           this.totalItems = res.data.maxPage * this.ipp;
           this.staffs = res.data.staffs;
