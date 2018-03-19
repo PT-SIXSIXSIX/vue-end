@@ -132,6 +132,7 @@
         });
       },
       handleBannerSuccess(res, file) {
+        this.$message.success('图片上传成功');
         this.articleForm.bannerUrl = res.url;
       },
       handleImageFail(err) {
