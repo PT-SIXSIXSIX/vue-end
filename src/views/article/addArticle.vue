@@ -42,7 +42,7 @@
         </el-input>
       </el-form-item>
       <el-form-item label="内容" prop="content">
-        <ai-simditor @change="onChange" ref="simditor" v-bind:content="articleForm.content"></ai-simditor>
+        <ai-simditor @change="change" v-bind:content="articleForm.content"></ai-simditor>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('articleForm')">发布</el-button>
@@ -64,6 +64,7 @@
       return {
         userId: this.$cookies.get('userId'),
         uploadUrl: globalConfig.nodeJsUrl + '/images',
+        contentTemp: '',
         options: [{
           value: '0',
           label: '案例分享'
@@ -120,6 +121,7 @@
         });
       },
       addArticle() {
+        this.articleForm.content = this.contentTemp;
         requests.AddArticle(this.userId, this.articleForm, this).then(res => {
           if (res) {
             this.$message.success('发布成功');
@@ -153,9 +155,9 @@
         this.uploadImageName = file.name;
         return isAllowed && isLt2M;
       },
-      onChange(val) {
-        this.articleForm.content = val;
-      }
+      change(val) {
+        this.contentTemp = val;
+      },
     },
     created() {
       this.$store.commit('SET_BREADCRUMBS', ['知识库管理', '添加文章']);

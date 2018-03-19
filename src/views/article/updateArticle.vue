@@ -20,10 +20,12 @@
           style="float: left; text-align: left !important;"
           class="image-uploader"
           :action="uploadUrl"
-          :show-file-list="false"
           :on-success="handleBannerSuccess"
           :on-error="handleImageFail"
-          :before-upload="beforeImageUpload">
+          :before-upload="beforeImageUpload"
+          :file-list="uploadImages"
+          :limit="uploadImageLimit"
+          list-type="picture">
           <el-button size="small" type="primary">点击上传</el-button>
           <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过1M</div>
         </el-upload>
@@ -40,7 +42,7 @@
         </el-input>
       </el-form-item>
       <el-form-item label="内容" prop="content">
-        <ai-simditor v-bind:content.sync="articleForm.content" v-bind:options="richOptions"></ai-simditor>
+        <ai-simditor @change="change" v-bind:content="articleForm.content"></ai-simditor>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('articleForm')">修改</el-button>
@@ -62,6 +64,7 @@
       return {
         userId: this.$cookies.get('userId'),
         uploadUrl: globalConfig.nodeJsUrl + '/images',
+        contentTemp: '',
         options: [{
           value: '0',
           label: '案例分享'
@@ -78,6 +81,9 @@
           value: '4',
           label: '为你省钱'
         }],
+        uploadImages: [],
+        uploadImageName: '',
+        uploadImageLimit: 2,
         articleForm: {
           title: '',
           type: '',
@@ -101,15 +107,6 @@
             { max: 140, message: '最多140个字', trigger: 'blur' },
           ],
         },
-        richOptions: {
-          upload: {
-            url: globalConfig.nodeJsUrl + '/images',
-            params: null,
-            fileKey: 'image',
-            connectionCount: 3,
-            leaveConfirm: '文件上传中，确认离开此页面?'
-          }
-        }
       }
     },
     methods: {
@@ -124,6 +121,7 @@
         });
       },
       updateArticle() {
+        this.articleForm.content = this.contentTemp;
         requests.UpdateArticle(this.userId, this.$route.params.articleId, this.articleForm, this).then(res => {
           if (res) {
             this.$message.success('修改成功');
@@ -132,7 +130,9 @@
         });
       },
       handleBannerSuccess(res, file) {
+        this.$message.success('图片上传成功');
         this.articleForm.bannerUrl = res.url;
+        this.uploadImages = [{ name: this.uploadImageName, url: res.url }]
       },
       handleImageFail(err) {
         let error = eval('(' + err.message + ')');
@@ -151,19 +151,23 @@
         if (!isLt2M) {
           this.$message.error('上传头像图片大小不能超过 1MB!');
         }
+
+        this.uploadImageName = file.name;
         return isAllowed && isLt2M;
       },
       change(val) {
-        console.log(val);
-        this.articleForm.content = val;
+        this.contentTemp = val;
       }
     },
     created() {
-      this.$store.commit('SET_BREADCRUMBS', ['知识库管理', '添加文章']);
+      this.$store.commit('SET_BREADCRUMBS', ['知识库管理', '编辑文章']);
 
       requests.GetArticle(this.userId, this.$route.params.articleId, {}, this).then(res => {
         this.articleForm = res.data.article;
-      })
+        this.contentTemp = this.articleForm.content;
+        this.uploadImageName = 'banner.jpg';
+        this.uploadImages = [{ name: this.uploadImageName, url: this.articleForm.bannerUrl }];
+      });
     },
   }
 </script>
