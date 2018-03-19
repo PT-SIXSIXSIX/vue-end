@@ -40,7 +40,7 @@
         </el-input>
       </el-form-item>
       <el-form-item label="内容" prop="content">
-        <simditor v-bind:content="articleForm.content" v-bind:options="richOptions" @change="change"></simditor>
+        <ai-simditor v-bind:content.sync="articleForm.content" v-bind:options="richOptions"></ai-simditor>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('articleForm')">修改</el-button>
@@ -52,11 +52,11 @@
 <script>
   import requests from '../../common/api';
   import globalConfig from '../../config';
-  import Simditor from 'vue-simditor'
+  import AiSimditor from '../../components/AiSimditor'
 
   export default {
     components: {
-      Simditor
+      AiSimditor
     },
     data() {
       return {
