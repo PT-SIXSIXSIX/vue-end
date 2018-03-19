@@ -49,6 +49,13 @@
   import requests from '../../common/api.js';
     export default {
       data () {
+        let validateDate = (rule, value, callback) => {
+          let now = Date.parse(new Date());
+          if (value < now)
+            callback(new Error('不能选择今天之前的时间!'));
+          else
+            callback();
+        };
         return {
           form: {
             driverId: [],
@@ -65,7 +72,8 @@
             }],
             orderedAt: [{
               required: true, message: '请选择预约时间', trigger: 'blur'
-            }],
+            },
+              {validator: validateDate, trigger: 'blur'}],
             projectType: [{
               required: true, message: '请选择项目类型', trigger: 'blur'
             }],
@@ -95,7 +103,7 @@
         onChange (value) {
           this.descpOptions = this.descpData[value];
           console.log(value, this.descpOptions, this.descpData);
-        }
+        },
       },
       created () {
         this.$store.commit('SET_BREADCRUMBS', ['门店管理', '添加订单']);

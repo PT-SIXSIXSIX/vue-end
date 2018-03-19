@@ -24,8 +24,10 @@
           :on-success="handleBannerSuccess"
           :on-error="handleImageFail"
           :before-upload="beforeImageUpload">
-          <el-button size="small" type="primary">点击上传</el-button>
-          <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过1M</div>
+          <img v-if="articleForm.bannerUrl" :src="articleForm.bannerUrl" class="avatar">
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          <!--<el-button size="small" type="primary">点击上传</el-button>-->
+          <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过1M</div>-->
         </el-upload>
       </el-form-item>
       <el-form-item label="作者" prop="author">
@@ -40,7 +42,10 @@
         </el-input>
       </el-form-item>
       <el-form-item label="内容" prop="content">
-        <simditor v-bind:content="articleForm.content" v-bind:options="richOptions" @change="change"></simditor>
+        <simditor
+          v-model="articleForm.content"
+          v-bind:options="richOptions"
+          @change="onChange"></simditor>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('articleForm')">发布</el-button>
@@ -103,7 +108,7 @@
         },
         richOptions: {
           upload: {
-            url: globalConfig.nodeJsUrl + '/images',
+            url: globalConfig.nodeJsUrl + '/images/sp',
             params: null,
             fileKey: 'image',
             connectionCount: 3,
@@ -154,8 +159,7 @@
         }
         return isAllowed && isLt2M;
       },
-      change(val) {
-        console.log(val);
+      onChange() {
         this.articleForm.content = val;
       }
     },
@@ -171,5 +175,29 @@
 <style lang="scss">
   .simditor {
     text-align: left !important;
+  }.avatar-uploader .el-upload {
+
+     border: 1px dashed #d9d9d9;
+     border-radius: 6px;
+     cursor: pointer;
+     position: relative;
+     overflow: hidden;
+   }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 90px;
+    height: 90px;
+    line-height: 90px;
+    text-align: center;
+  }
+  .avatar {
+    width: 120px;
+    height: 90px;
+    display: block;
   }
 </style>
+

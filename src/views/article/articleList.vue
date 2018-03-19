@@ -5,7 +5,7 @@
         <el-col :span="2" :offset="1">
           <el-button @click="batchDelete" plain>批量删除</el-button>
         </el-col>
-        <el-col :span="2" style="margin-left: 5px;">
+        <el-col :span="2" style="padding-left: 10px">
           <el-button @click="$router.push('/index/addArticle')" plain>新建文章</el-button>
         </el-col>
         <el-col :span="3" :offset="5">
@@ -58,13 +58,13 @@
         </el-table-column>
         <el-table-column
           prop="articleId"
-          min-width="10%"
+          min-width="15%"
           label="文章序号"
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
           prop="title"
-          min-width="15%"
+          min-width="10%"
           label="标题">
         </el-table-column>
         <el-table-column
@@ -114,7 +114,7 @@
         <el-pagination
           @current-change="handleCurrentChange"
           :current-page="currentPage"
-          :page-size="7"
+          :page-size="6"
           :total="totalItems"
           layout="prev, pager, next, jumper">
         </el-pagination>
@@ -136,6 +136,7 @@
         currentPage: 1,
         queryContent: '',
         queryTime: [],
+        ipp: 6,
         showDatePicker: false,
         options: [{
           value: '0',
@@ -172,6 +173,7 @@
         requests.GetArticles(this.userId, params, this).then(res => {
           this.totalItems = res.data.maxPage * this.ipp;
           this.articles = res.data.articles;
+          console.log(this.totalItems);
         })
       },
       searchArticleList () {

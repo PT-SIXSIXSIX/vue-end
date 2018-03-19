@@ -59,7 +59,8 @@
         rules: {
           ownerName: [{ required: true, message: '请输入开户人真实姓名', trigger: 'blur'}],
           ownerIdCard: [{ required: true, message: '请输入开户人身份证号码', trigger: 'blur'}],
-          cardId: [{ required: true, message: '请输入银行卡账号', trigger: 'blur'}],
+          cardId: [{ required: true, message: '请输入银行卡账号', trigger: 'blur'},
+            {}],
           bankName: [{ required: true, message: '请选择银行', trigger: 'blur'}],
           type: [{ required: true, message: '请选择银行卡类型', trigger: 'blur'}],
         },
