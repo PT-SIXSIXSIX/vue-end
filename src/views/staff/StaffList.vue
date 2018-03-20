@@ -10,7 +10,6 @@
     <el-col :span="18" :offset="2">
         <el-table
           :data="staffs"
-          stripe
           style="width: 100%">
           <el-table-column
             prop="name"

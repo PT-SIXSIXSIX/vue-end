@@ -134,6 +134,8 @@
         } else if (parseInt(value) < (this.depositThreshold - this.currentDeposit)) {
           let need = this.depositThreshold - this.currentDeposit;
           callback(new Error('输入金额不足，至少' + need + '元'))
+        } else if (parseInt(value) > 100000){
+          callback(new Error('输入金额过多， 不能超过100000元'));
         } else {
           callback();
         }

@@ -143,7 +143,7 @@
       },
       //重置表单
       resetForm() {
-        this.form = this.oldForm;
+        this.form = JSON.parse(JSON.stringify(this.oldForm));
       },
       //图片上传成功提示
       handleHeadSuccess(res) {
@@ -153,17 +153,16 @@
       },
       //图片上传格式和大小验证
       beforeHeadUpload(file) {
-        const isJPG = file.type === 'image/jpeg';
-        const isPNG = file.type === 'image/png';
-        const isLt5M = file.size / 1024 / 1024 < 5;
+        const isAllowed = globalConfig.allowedImageType.indexOf(file.type) >= 0;
+        const isLt1M = file.size / 1024 / 1024 < 1;
 
-        if (!isJPG || isPNG) {
+        if (!isAllowed) {
           this.$message.error('上传头像图片只能是 JPG/PNG 格式!');
         }
-        if (!isLt5M) {
-          this.$message.error('上传头像图片大小不能超过 5MB!');
+        else if (!isLt1M) {
+          this.$message.error('上传头像图片大小不能超过 1MB!');
         }
-        return isJPG && isLt5M;
+        return isAllowed && isLt1M;
       },
       //上传图片成功提示
       handleTailSuccess(res) {
@@ -181,17 +180,16 @@
       },
       //图片上传格式和大小验证
       beforeTailUpload(file) {
-        const isJPG = file.type === 'image/jpeg';
-        const isPNG = file.type === 'image/png';
-        const isLt5M = file.size / 1024 / 1024 < 5;
+        const isAllowed = globalConfig.allowedImageType.indexOf(file.type) >= 0;
+        const isLt1M = file.size / 1024 / 1024 < 1;
 
-        if (!(isJPG || isPNG)) {
+        if (!isAllowed) {
           this.$message.error('上传头像图片只能是 JPG/PNG 格式!');
         }
-        if (!isLt5M) {
-          this.$message.error('上传头像图片大小不能超过 5MB!');
+        else if (!isLt1M) {
+          this.$message.error('上传头像图片大小不能超过 1MB!');
         }
-        return isJPG && isLt5M;
+        return isAllowed && isLt1M;
       },
     },
     created() {

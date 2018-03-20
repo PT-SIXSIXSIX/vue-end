@@ -143,15 +143,15 @@
       },
       beforeImageUpload(file) {
         const isAllowed = globalConfig.allowedImageType.indexOf(file.type) >= 0;
-        const isLt2M = file.size / 1024 / 1024 < 1;
+        const isLt1M = file.size / 1024 / 1024 < 1;
 
         if (!isAllowed) {
           this.$message.error('上传头像图片只能是 JPG或PNG 格式!');
         }
-        if (!isLt2M) {
+        if (!isLt1M) {
           this.$message.error('上传头像图片大小不能超过 1MB!');
         }
-        return isAllowed && isLt2M;
+        return isAllowed && isLt1M;
       }
     }
   }

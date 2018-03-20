@@ -107,8 +107,10 @@
             <el-button @click="updateArticle(scope.row.type, scope.row.articleId)" type="text" size="small">编辑</el-button>
             <el-button @click="dialogVisible = true" type="text" size="small">预览</el-button>
             <el-dialog title="预览" :visible.sync="dialogVisible" :modal="false">
-              <span v-html="scope.row.content">
-              </span>
+              <el-row  style="max-height: 480px; overflow: auto; list-style-position: inside;">
+                <div v-html="scope.row.content" align="left">
+                </div>
+              </el-row>
             </el-dialog>
           </template>
         </el-table-column>
@@ -235,5 +237,9 @@
     border-color: #409EFF !important;
     background-color: #409EFF !important;
     color: #fff !important;
+  }
+
+  a {
+    color: #4298BA;
   }
 </style>
