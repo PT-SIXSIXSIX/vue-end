@@ -47,20 +47,23 @@
   export default {
     data() {
       return {
-        tableData:[]
+        tableData:[],
+        userId: this.$cookies.get('userId')
       }
     },
     methods: {
+      //添加银行卡
       addCards () {
         this.$router.push('/index/account/addBankCard')
       },
+      //删除银行卡
       deleteCard (rowIndex, cardId) {
         this.$confirm('此操作将解除绑定该银行卡, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          console.log(this.tableData);
+          //提交删除银行卡请求
           requests.DeleteBankCard(this.userId, {"cardIds": [cardId]}, this).then(res => {
             this.tableData.pop(rowIndex);
             this.$message({
@@ -79,7 +82,7 @@
     created() {
       this.$store.commit('SET_BREADCRUMBS', ['我的账户', '银行卡']);
 
-      this.userId = this.$cookies.get('userId');
+      //获取已绑定银行卡
       requests.GetBankCards(this.userId, {}, this).then(res => {
         console.log(res.data.bankcards);
         this.tableData = res.data.bankcards;

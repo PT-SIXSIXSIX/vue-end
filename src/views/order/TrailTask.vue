@@ -91,16 +91,18 @@
   export default {
     data() {
       return {
+        userId: this.$cookies.get('userId'),
         tableData: [],
         queryContent: '',
         queryTime: [],
         totalItems: 0,
-        defaultTime: ["00:00:00", "23:59:59"],
         currentPage: 1,
+        defaultTime: ["00:00:00", "23:59:59"],
         showDatePicker: false
       };
     },
     methods: {
+      //格式化状态内容
       formatter (row) {
         let states = {'1': '已接受',
           '-1': '已拒绝',
@@ -108,6 +110,7 @@
         };
         return states[row.state];
       },
+      //获得订单信息
       getOrders (ipp, page=1, q='') {
         let params = {ipp: ipp, page: page, q: q};
         requests.GetOrders(this.userId, this.projType, params, this).then(res => {
@@ -116,6 +119,7 @@
           this.tableData = this.tableOrgData;
         });
       },
+      //查询订单信息
       queryOrder () {
         console.log(this.queryContent, this.queryTime);
         if (this.queryContent || (this.queryTime[0] && this.queryTime[1])){
@@ -128,6 +132,7 @@
           this.$message.error('请输入需要查询的信息！');
         }
       },
+      //处理订单请求
       handleOrder (rowIndex, orderId, state) {
         let opr = {
           '1': '接受',
@@ -149,6 +154,7 @@
           });
         })
       },
+      //分页跳转页面
       handleCurrentChange (currentPage) {
         this.getOrders(this.ipp, currentPage);
       },
@@ -156,7 +162,6 @@
     created() {
       this.$store.commit('SET_BREADCRUMBS', ['我的订单', '拖车任务']);
 
-      this.userId = this.$cookies.get('userId');
       this.projType = 4;
       this.ipp = 6;
       this.getOrders(this.ipp);

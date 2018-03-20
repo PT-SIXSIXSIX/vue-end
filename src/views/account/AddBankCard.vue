@@ -24,7 +24,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="11" :offset="2">
-          <el-form-tiem pro="type">
+          <el-form-item pro="type">
             <el-select v-model="form.type" placeholder="请选择银行卡类型">
               <el-option
                 v-for="item in cardOptions"
@@ -33,7 +33,7 @@
                 :value="item.value">
               </el-option>
             </el-select>
-          </el-form-tiem>
+          </el-form-item>
         </el-col>
       </el-form-item>
       <el-form-item>
@@ -48,7 +48,15 @@
   import requests from '../../common/api';
   export default {
     data() {
+      //验证银行卡号有效性
+      let validateCardId = (rule, value, callback) => {
+        if (value.length != 16 || value.length != 19)
+          callback(new Error('银行卡的位数只能是16或19位!'));
+        else
+          callback();
+      };
       return {
+        userId: this.$cookies.get('userId'),
         form: {
           ownerName: '',
           ownerIdCard: '',
@@ -60,7 +68,7 @@
           ownerName: [{ required: true, message: '请输入开户人真实姓名', trigger: 'blur'}],
           ownerIdCard: [{ required: true, message: '请输入开户人身份证号码', trigger: 'blur'}],
           cardId: [{ required: true, message: '请输入银行卡账号', trigger: 'blur'},
-            {}],
+            {validator: validateCardId, trigger: 'blur'}],
           bankName: [{ required: true, message: '请选择银行', trigger: 'blur'}],
           type: [{ required: true, message: '请选择银行卡类型', trigger: 'blur'}],
         },
@@ -95,6 +103,7 @@
       }
     },
     methods: {
+      //提交银行卡表单
       onSubmit(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -111,15 +120,16 @@
           }
         });
       },
+      //重置表单
       resetForm(formName) {
         this.$refs[formName].resetFields();
         this.form.bankName = '';
         this.form.type = '';
       },
     },
+    //初始化
     created() {
       this.$store.commit('SET_BREADCRUMBS', ['我的账户', '添加银行卡']);
-      this.userId = this.$cookies.get('userId');
     },
   };
 </script>

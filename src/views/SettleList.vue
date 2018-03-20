@@ -123,6 +123,7 @@
   export default {
     data() {
       return {
+        userId: this.$cookies.get('userId'),
         tableData: [],
         value7: [],
         totalItems: 0,
@@ -145,6 +146,7 @@
       };
     },
     methods: {
+      //格式化状态内容
       stateFormatter (row) {
         let states = {'0': '联保中',
           '1': '待结算',
@@ -152,12 +154,15 @@
         };
         return states[row.state];
       },
+      //格式化平台佣金
       commissionFormatter (row){
         return row.tradeMoney * 0.1;
       },
+      //格式化实际到账
       actualFormatter (row){
         return row.tradeMoney * 0.9;
       },
+      //获取结算单列表
       getSettleList (ipp, page=1, q='') {
         let params = {ipp: ipp, page: page, q: q};
         requests.GetSettleList(this.userId, params, this).then(res => {
@@ -166,6 +171,7 @@
           this.tableData = this.tableOrgData.slice(0, this.ipp);
         });
       },
+      //查询结算单信息
       querySettleList () {
         if (this.queryContent || (this.queryTime[0] && this.queryTime[1])){
           let q = {};
@@ -176,9 +182,11 @@
           this.$message.error('请输入需要查询的信息！');
         }
       },
+      //处理分页页面跳转
       handleCurrentChange (currentPage) {
         this.getSettleList(this.ipp, currentPage);
       },
+      //批量结算
       batchSettle (){
         this.$confirm('此操作将批量结算订单, 是否继续?', '提示', {
           confirmButtonText: '确定',
@@ -189,6 +197,7 @@
           let data = {
             setAccIds: []
           };
+          //组合选择的结算单
           for (let item in selected){
             data.setAccIds.push(selected[item].setAccId);
           }
@@ -203,6 +212,7 @@
           });
         });
       },
+      //控制操作按钮状态
       handleSelect (row) {
         return row.state !== 2;
       },
@@ -210,7 +220,6 @@
     created() {
       this.$store.commit('SET_BREADCRUMBS', ['结算管理']);
 
-      this.userId = this.$cookies.get('userId');
       this.projType = 1;
       this.ipp = 7;
       this.getSettleList(this.ipp);

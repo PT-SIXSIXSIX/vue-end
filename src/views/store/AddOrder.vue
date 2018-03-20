@@ -49,6 +49,7 @@
   import requests from '../../common/api.js';
     export default {
       data () {
+        //验证日期选择
         let validateDate = (rule, value, callback) => {
           let now = Date.parse(new Date());
           if (value < now)
@@ -57,6 +58,7 @@
             callback();
         };
         return {
+          userId: this.$cookies.get('userId'),
           form: {
             driverId: [],
             orderedAt: '',
@@ -84,6 +86,7 @@
         }
       },
       methods: {
+        //提交订单信息
         onSubmit (formName) {
           this.$refs[formName].validate((valid) => {
             if (valid) {
@@ -97,18 +100,20 @@
             }
           })
         },
+        //重置表单
         resetForm (formName) {
           this.$refs[formName].resetFields();
         },
+        //根据项目类型控制项目内容选项
         onChange (value) {
           this.descpOptions = this.descpData[value];
-          console.log(value, this.descpOptions, this.descpData);
+          this.form.projectId = '';
         },
       },
       created () {
         this.$store.commit('SET_BREADCRUMBS', ['门店管理', '添加订单']);
-        this.userId = this.$cookies.get('userId');
 
+        //获得司机信息
         requests.GetDrivers({}, this).then(res => {
           this.list = res.data.drivers.map(item => {
             return { value: item.id, label: item.driverName };
@@ -117,9 +122,11 @@
           this.driverOptions = this.list;
         });
 
+        //获得项目信息
         requests.GetProjects(this.userId, {}, this).then(res => {
           let tmpData = {1: [], 2: [], 3: [], 4: []};
           let tmpRes = res.data.projects;
+          //根据项目类型组合项目内容数据
           for (let item in tmpRes){
             for (let i in tmpData){
               if (i == tmpRes[item].type){

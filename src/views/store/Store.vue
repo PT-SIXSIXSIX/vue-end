@@ -63,9 +63,8 @@
   import globalConfig from '../../config/index';
   import utils from '../../common/utils';
   export default {
-    beforeCreate (){
-    },
     data() {
+      //验证身份证号码
       let validateIdCard = (rule, value, callback) => {
         if (!utils.verifyIdCard(value)) {
           callback(new Error('身份证号输入格式不正确'));
@@ -73,6 +72,7 @@
           callback();
         }
       };
+      //验证手机号是否被注册
       let validatePhone = (rule, value, callback) => {
         if (!utils.verifyPhone(value)) {
           callback(new Error('手机号码输入格式不正确'));
@@ -82,13 +82,15 @@
             if (res.data.phoneExist) {
               callback(new Error('手机号码已被注册'));
             } else {
-              callback();r
+              callback();
             }
           });
         }
       };
       return {
+        userId: this.$cookies.get('userId'),
         form: {
+          userId: this.$cookies.get('userId'),
           companyName: '',
           phone: '',
           reservePhone: '',
@@ -127,6 +129,7 @@
       }
     },
     methods: {
+      //提交表单
       onSubmit(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -138,14 +141,17 @@
           }
         });
       },
-      resetForm(formName) {
+      //重置表单
+      resetForm() {
         this.form = this.oldForm;
       },
+      //图片上传成功提示
       handleHeadSuccess(res) {
         this.picHeadUrl = res.url;
         this.form.picHeadUrl = res.url;
         this.$message.success('上传成功!');
       },
+      //图片上传格式和大小验证
       beforeHeadUpload(file) {
         const isJPG = file.type === 'image/jpeg';
         const isPNG = file.type === 'image/png';
@@ -159,11 +165,13 @@
         }
         return isJPG && isLt5M;
       },
+      //上传图片成功提示
       handleTailSuccess(res) {
         this.picTailUrl = res.url;
         this.form.picTailUrl = res.url;
         this.$message.success('上传成功!');
       },
+      //上传图片失败提示
       handleImageFail(err) {
         let error = eval('(' + err.message + ')');
         this.$notify.error({
@@ -171,6 +179,7 @@
           message: error.errorDesc
         });
       },
+      //图片上传格式和大小验证
       beforeTailUpload(file) {
         const isJPG = file.type === 'image/jpeg';
         const isPNG = file.type === 'image/png';
@@ -188,7 +197,6 @@
     created() {
       this.$store.commit('SET_BREADCRUMBS', ['门店管理', '我的门店']);
 
-      this.userId = this.$cookies.get('userId');
       requests.GetStoreInfo(this.userId, {}, this).then(res => {
         this.oldForm = JSON.parse(JSON.stringify(res.data));
         this.form = JSON.parse(JSON.stringify(res.data));

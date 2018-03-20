@@ -3,8 +3,8 @@
     <el-col :span="6" :offset="17">
       <el-button  type="text" icon="el-icon-plus" @click="dialogFormVisible = true">添加项目</el-button>
       <el-dialog title="项目内容" :visible.sync="dialogFormVisible" width="30%">
-        <el-form :model="form">
-          <el-form-item label="项目类型">
+        <el-form :model="form" :rules="rules">
+          <el-form-item label="项目类型" prop="type">
             <el-select v-model="form.type" placeholder="请选择活动区域" style="width: 100%">
               <el-option label="保养预约" value="1"></el-option>
               <el-option label="维修任务" value="2"></el-option>
@@ -12,7 +12,7 @@
               <el-option label="拖车任务" value="4"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="项目描述">
+          <el-form-item label="项目描述" prop="descp">
             <el-input
               type="textarea"
               :rows="2"
@@ -20,7 +20,7 @@
               v-model="form.descp">
             </el-input>
           </el-form-item>
-          <el-form-item label="项目价格">
+          <el-form-item label="项目价格" prop="price">
             <el-input
               type="number"
               :rows="2"
@@ -89,18 +89,39 @@
   import requests from '../../common/api.js'
     export default {
       data () {
+        //验证价格
+        let validatePrice = (rule, value, callback) => {
+          if (value < 0)
+            callback(new Error('价格不能小于零！'));
+          else
+            callback();
+        };
         return {
+          userId: this.$cookies.get('userId'),
           tableData: [],
           dialogFormVisible: false,
           dialogVisible: false,
           totalItems: 0,
           currentPage: 1,
+          rules: {
+            type: [{
+               required: true, message: '请选择项目类型', trigger: 'blur'
+            }],
+            descp: [{
+               required: true, message: '请输入项目内容描述', trigger: 'blur'
+            }],
+            price: [{
+               required: true, message: '请输入价格', trigger: 'blur'
+            },
+              {validator: validatePrice, trigger:'blur'}],
+          },
           form: {
 
           },
         }
       },
       methods: {
+        //格式化状态内容
         formatter (row) {
           let types = {
             '1': '保养预约',
@@ -110,6 +131,7 @@
           };
           return types[row.type];
         },
+        //提交表单信息
         onSubmit () {
           this.form.price = parseInt(this.form.price);
           requests.AddProject(this.userId, this.form, this).then(res => {
@@ -119,11 +141,6 @@
           });
         },
         handleDelete (row) {
-          // this.$confirm('此操作将删除该项目，是否继续？', '提示', {
-          //   confirmButtonText: '确定',
-          //   cancelButtonText: '取消',
-          //   type: 'warning'
-          // }).then(() => {
             requests.DeleteProject(this.userId, {projectsIds: [row.id]}, this).then(res => {
               this.tableData.pop(row.rowIndex);
               this.$message({
@@ -132,8 +149,8 @@
               });
               this.dialogVisible = false;
             });
-          // });
         },
+        //获取项目信息
         getProjects () {
           requests.GetProjects(this.userId, {}, this).then(res => {
             this.tableData = res.data.projects;
@@ -144,7 +161,6 @@
       created() {
         this.$store.commit('SET_BREADCRUMBS', ['门店管理', '项目列表']);
 
-        this.userId = this.$cookies.get('userId');
         this.getProjects();
       }
     }
