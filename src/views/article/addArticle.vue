@@ -20,14 +20,14 @@
           style="float: left; text-align: left !important;"
           class="image-uploader"
           :action="uploadUrl"
-          :show-file-list="false"
           :on-success="handleBannerSuccess"
           :on-error="handleImageFail"
-          :before-upload="beforeImageUpload">
-          <img v-if="articleForm.bannerUrl" :src="articleForm.bannerUrl" class="avatar">
-          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          <!--<el-button size="small" type="primary">点击上传</el-button>-->
-          <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过1M</div>-->
+          :before-upload="beforeImageUpload"
+          :file-list="uploadImages"
+          :limit="uploadImageLimit"
+          list-type="picture">
+          <el-button size="small" type="primary">点击上传</el-button>
+          <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过1M</div>
         </el-upload>
       </el-form-item>
       <el-form-item label="作者" prop="author">
@@ -42,10 +42,7 @@
         </el-input>
       </el-form-item>
       <el-form-item label="内容" prop="content">
-        <simditor
-          v-model="articleForm.content"
-          v-bind:options="richOptions"
-          @change="onChange"></simditor>
+        <ai-simditor @change="change" v-bind:content="articleForm.content"></ai-simditor>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('articleForm')">发布</el-button>
@@ -57,16 +54,17 @@
 <script>
   import requests from '../../common/api';
   import globalConfig from '../../config';
-  import Simditor from 'vue-simditor'
+  import AiSimditor from '../../components/AiSimditor'
 
   export default {
     components: {
-      Simditor
+      AiSimditor
     },
     data() {
       return {
         userId: this.$cookies.get('userId'),
         uploadUrl: globalConfig.nodeJsUrl + '/images',
+        contentTemp: '',
         options: [{
           value: '0',
           label: '案例分享'
@@ -91,6 +89,9 @@
           summary: '',
           content: ''
         },
+        uploadImages: [],
+        uploadImageName: '',
+        uploadImageLimit: 1,
         rules: {
           title: [
             { required: true, message: '请输入标题', trigger: 'blur' }
@@ -106,15 +107,6 @@
             { max: 140, message: '最多140个字', trigger: 'blur' },
           ],
         },
-        richOptions: {
-          upload: {
-            url: globalConfig.nodeJsUrl + '/images/sp',
-            params: null,
-            fileKey: 'image',
-            connectionCount: 3,
-            leaveConfirm: '文件上传中，确认离开此页面?'
-          }
-        }
       }
     },
     methods: {
@@ -129,6 +121,7 @@
         });
       },
       addArticle() {
+        this.articleForm.content = this.contentTemp;
         requests.AddArticle(this.userId, this.articleForm, this).then(res => {
           if (res) {
             this.$message.success('发布成功');
@@ -139,6 +132,7 @@
       handleBannerSuccess(res, file) {
         this.$message.success('图片上传成功');
         this.articleForm.bannerUrl = res.url;
+        this.uploadImages = [{ name: this.uploadImageName, url: res.url }]
       },
       handleImageFail(err) {
         let error = eval('(' + err.message + ')');
@@ -157,47 +151,18 @@
         if (!isLt2M) {
           this.$message.error('上传头像图片大小不能超过 1MB!');
         }
+
+        this.uploadImageName = file.name;
         return isAllowed && isLt2M;
       },
-      onChange() {
-        this.articleForm.content = val;
-      }
+      change(val) {
+        this.contentTemp = val;
+      },
     },
     created() {
       this.$store.commit('SET_BREADCRUMBS', ['知识库管理', '添加文章']);
     },
-    mounted() {
-
-    }
   }
 </script>
 
-<style lang="scss">
-  .simditor {
-    text-align: left !important;
-  }.avatar-uploader .el-upload {
-
-     border: 1px dashed #d9d9d9;
-     border-radius: 6px;
-     cursor: pointer;
-     position: relative;
-     overflow: hidden;
-   }
-  .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-  }
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 90px;
-    height: 90px;
-    line-height: 90px;
-    text-align: center;
-  }
-  .avatar {
-    width: 120px;
-    height: 90px;
-    display: block;
-  }
-</style>
 
