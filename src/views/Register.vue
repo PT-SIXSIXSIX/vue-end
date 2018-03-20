@@ -42,7 +42,7 @@
         </el-form-item>
       </el-form>
       <div class="sign-options">
-        已有帐号？<span><router-link :to="{ path: 'login' }">去登录</router-link></span>
+        已有帐号？<span><router-link to="/login">去登录</router-link></span>
       </div>
     </div>
 </template>
@@ -58,7 +58,6 @@
         if (!utils.verifyPhone(value)) {
           callback(new Error('手机号码输入格式不正确'));
         } else {
-          callback();
           requests.VerifyPhone({verifyPhone: value}, this).then(res => {
             if (res.data.phoneExist) {
               callback(new Error('手机号码已被注册'));
