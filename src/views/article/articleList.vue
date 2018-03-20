@@ -71,7 +71,7 @@
           prop="bannerUrl"
           min-width="15%"
           label="文章配图">
-          <template slot-scope="scope">
+          <template slot-scope="scope" v-if="scope.row.bannerUrl">
             <el-popover
               placement="right"
               trigger="hover">
