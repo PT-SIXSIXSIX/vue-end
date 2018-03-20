@@ -67,6 +67,12 @@
           });
         }
       };
+      let validateReservePhone = (rule, value, callback) => {
+        if (!utils.verifyPhone(value) && value != '')
+          callback(new Error('手机号码输入格式不正确'));
+        else
+          callback();
+      };
       let validateVerifyCode = (rule, value, callback) => {
         let params = {
           phone: this.registerForm.phone,
@@ -112,6 +118,9 @@
           verifyCode: [
             { required: true, message: '请输入验证码', trigger: 'blur' },
             { validator: validateVerifyCode, trigger: 'blur' }
+          ],
+          reservePhone: [
+            { validator: validateReservePhone, trigger: 'blur'}
           ],
           password: [
             { required: true, message: '请输入密码', trigger: 'blur' },

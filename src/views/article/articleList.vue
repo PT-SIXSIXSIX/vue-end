@@ -105,6 +105,11 @@
           width="100">
           <template slot-scope="scope">
             <el-button @click="updateArticle(scope.row.type, scope.row.articleId)" type="text" size="small">编辑</el-button>
+            <el-button @click="dialogVisible = true" type="text" size="small">预览</el-button>
+            <el-dialog title="预览" :visible.sync="dialogVisible" :modal="false">
+              <span v-html="scope.row.content">
+              </span>
+            </el-dialog>
           </template>
         </el-table-column>
       </el-table>
@@ -138,6 +143,7 @@
         queryTime: [],
         ipp: 6,
         showDatePicker: false,
+        dialogVisible: false,
         options: [{
           value: '0',
           label: '案例分享'

@@ -100,7 +100,7 @@
         <el-form-item label="补足金额" :label-width="formLabelWidth" prop="money">
           <el-input type="number" v-model="depositForm.money" auto-complete="off" style="float: left;width: 50% !important;"></el-input>
         </el-form-item>
-        <el-form-item label="银行卡" :label-width="formLabelWidth">
+        <el-form-item label="银行卡" :label-width="formLabelWidth" prop="cardId">
           <el-select v-model="depositForm.cardId" placeholder="选择银行卡" style="float: left;width: 50%;">
             <el-option
               v-for="item in options"
@@ -162,6 +162,9 @@
           money: [
             { required: true, message: '请输入补足金额', trigger: 'blur' },
             { validator: validateDeposit, trigger: 'blur' }
+          ],
+          cardId: [
+            {required: true, message: '请选择银行卡', trigger: 'blur'}
           ]
         }
       };

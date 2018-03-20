@@ -46,12 +46,20 @@
 
 <script>
   import requests from '../../common/api';
+  import utils from '../../common/utils';
   export default {
     data() {
       //验证银行卡号有效性
       let validateCardId = (rule, value, callback) => {
-        if (value.length != 16 || value.length != 19)
+        console.log(value.length != 16 && value.length != 19);
+        if (value.length != 16 && value.length != 19)
           callback(new Error('银行卡的位数只能是16或19位!'));
+        else
+          callback();
+      };
+      let validateIdCard = (rule, value, callback) => {
+        if (!utils.verifyIdCard(value))
+          callback(new Error('身份证号码验证失败！'));
         else
           callback();
       };
@@ -66,7 +74,8 @@
         },
         rules: {
           ownerName: [{ required: true, message: '请输入开户人真实姓名', trigger: 'blur'}],
-          ownerIdCard: [{ required: true, message: '请输入开户人身份证号码', trigger: 'blur'}],
+          ownerIdCard: [{ required: true, message: '请输入开户人身份证号码', trigger: 'blur'},
+            {validator: validateIdCard, trigger:'blur'}],
           cardId: [{ required: true, message: '请输入银行卡账号', trigger: 'blur'},
             {validator: validateCardId, trigger: 'blur'}],
           bankName: [{ required: true, message: '请选择银行', trigger: 'blur'}],

@@ -1,9 +1,13 @@
 let verifyPhone = phone => {
-  return /^[1][34578][0-9]{9}$/.test(phone);
+  return /^((13[0-9])|(15[^4,\D])|(17[0-9])|(18[0,5-9]))\d{8}$/.test(phone);
 };
 
 let verifyIdCard = idCard => {
-  return /(^\d{18}$)|(^\d{17}(\d|X|x)$)/.test(idCard);
+  if (idCard.length == 15)
+    return /^[1-9]\d{7}((0[1-9])|(1[0-2]))((0[1-9])|(1\d)|(2\d)|(3[0-1]))\d{3}$/.test(idCard);
+  else if (idCard.length == 18)
+    return /^[1-9]\d{5}[1-9]\d{3}((0[1-9])|(1[0-2]))((0[1-9])|(1\d)|(2\d)|(3[0-1]))\d{3}([0-9]|X)$/.test(idCard);
+  return false;
 };
 
 let filterByKeys = (obj, keys, discard=true) => {
