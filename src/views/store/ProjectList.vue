@@ -93,7 +93,9 @@
         let validatePrice = (rule, value, callback) => {
           if (value < 0)
             callback(new Error('价格不能小于零！'));
-          else
+          else if (value >= 1000000) {
+            callback(new Error('价格不能大约1000000元！'))
+          }
             callback();
         };
         return {
@@ -116,7 +118,9 @@
               {validator: validatePrice, trigger:'blur'}],
           },
           form: {
-
+            type: '',
+            descp: '',
+            price: '',
           },
         }
       },
@@ -137,6 +141,11 @@
           requests.AddProject(this.userId, this.form, this).then(res => {
             this.$message.success('添加成功！');
             this.dialogFormVisible = false;
+            this.form = {
+              type: '',
+              descp: '',
+              price: '',
+            };
             this.getProjects();
           });
         },
