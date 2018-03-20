@@ -68,7 +68,7 @@
         }
       };
       let validateReservePhone = (rule, value, callback) => {
-        if (!utils.verifyPhone(value) && value != '')
+        if (!utils.verifyPhone(value))
           callback(new Error('手机号码输入格式不正确'));
         else
           callback();
@@ -120,6 +120,7 @@
             { validator: validateVerifyCode, trigger: 'blur' }
           ],
           reservePhone: [
+            { required: true, message: '请输入备用手机号码', trigger: 'blur' },
             { validator: validateReservePhone, trigger: 'blur'}
           ],
           password: [

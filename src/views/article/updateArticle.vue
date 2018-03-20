@@ -23,6 +23,7 @@
           :on-success="handleBannerSuccess"
           :on-error="handleImageFail"
           :before-upload="beforeImageUpload"
+          :on-remove="handleRemove"
           :file-list="uploadImages"
           :limit="uploadImageLimit"
           list-type="picture">
@@ -141,6 +142,10 @@
           message: error.errorDesc
         });
       },
+      handleRemove(file, fileList) {
+        this.articleForm.bannerUrl = '';
+        this.uploadImages = [];
+      },
       beforeImageUpload(file) {
         const isAllowed = globalConfig.allowedImageType.indexOf(file.type) >= 0;
         const isLt2M = file.size / 1024 / 1024 < 1;
@@ -165,8 +170,10 @@
       requests.GetArticle(this.userId, this.$route.params.articleId, {}, this).then(res => {
         this.articleForm = res.data.article;
         this.contentTemp = this.articleForm.content;
-        this.uploadImageName = 'banner.jpg';
-        this.uploadImages = [{ name: this.uploadImageName, url: this.articleForm.bannerUrl }];
+        if (this.articleForm.bannerUrl) {
+          this.uploadImageName = 'banner.jpg';
+          this.uploadImages = [{ name: this.uploadImageName, url: this.articleForm.bannerUrl }];
+        }
       });
     },
   }
