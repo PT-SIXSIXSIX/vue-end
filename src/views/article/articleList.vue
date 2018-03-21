@@ -105,10 +105,10 @@
           width="100">
           <template slot-scope="scope">
             <el-button @click="updateArticle(scope.row.type, scope.row.articleId)" type="text" size="small">编辑</el-button>
-            <el-button @click="dialogVisible = true" type="text" size="small">预览</el-button>
+            <el-button @click="preview(scope.row.content)" type="text" size="small">预览</el-button>
             <el-dialog title="预览" :visible.sync="dialogVisible" :modal="false">
               <el-row  style="max-height: 480px; overflow: auto; list-style-position: inside;">
-                <div v-html="scope.row.content" align="left">
+                <div v-html="previewContent" align="left">
                 </div>
               </el-row>
             </el-dialog>
@@ -144,6 +144,7 @@
         queryContent: '',
         queryTime: [],
         ipp: 6,
+        previewContent: '',
         showDatePicker: false,
         dialogVisible: false,
         options: [{
@@ -175,6 +176,11 @@
           '4': '为你省钱'
         };
         return types[row.type];
+      },
+      preview (content) {
+        console.log(content);
+        this.previewContent = content;
+        this.dialogVisible = true;
       },
       getArticleList (currentPage, q='') {
         let params = {ipp: this.ipp, page: currentPage, q: q, type: this.type};
