@@ -46,7 +46,7 @@
         </el-table-column>
         <el-table-column
           prop="setAccId"
-          min-width="18%"
+          min-width="16%"
           label="结算单号">
         </el-table-column>
         <el-table-column
@@ -62,13 +62,13 @@
         </el-table-column>
         <el-table-column
           prop="driverPhone"
-          min-width="18%"
+          min-width="14%"
           label="手机号码"
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
           prop="tradedAt"
-          min-width="15%"
+          min-width="12%"
           label="付款时间"
           show-overflow-tooltip>
         </el-table-column>
@@ -76,6 +76,7 @@
           prop="tradeMoney"
           min-width="8%"
           label="付款金额"
+          :formatter="moneyFormatter"
           show-overflow-tooltip>
         </el-table-column>
         <el-table-column
@@ -154,13 +155,16 @@
         };
         return states[row.state];
       },
+      moneyFormatter (row) {
+        return (row.tradeMoney).toFixed(2);
+      },
       //格式化平台佣金
       commissionFormatter (row){
-        return row.tradeMoney * 0.1;
+        return (row.tradeMoney * 0.1).toFixed(2);
       },
       //格式化实际到账
       actualFormatter (row){
-        return row.tradeMoney * 0.9;
+        return (row.tradeMoney * 0.9).toFixed(2);
       },
       //获取结算单列表
       getSettleList (ipp, page=1, q='') {
