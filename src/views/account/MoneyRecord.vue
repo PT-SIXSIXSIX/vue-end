@@ -101,6 +101,7 @@
         let pageParams = { page: this.currentPage, ipp: this.ipp };
         let params = Object.assign(pageParams, q);
         requests.GetMoneyRecords(this.userId, params, this).then(res => {
+          this.totalItems = res.data.maxPage;
           this.moneyRecords = res.data.records;
         });
       },
@@ -109,7 +110,7 @@
         if (this.content) q['content'] = this.content;
         if (this.time[0] !== undefined && this.time[1] !== undefined)
           q['time'] = 'time:' + this.time[0] + '-' + this.time[1];
-        this.getDeposits(this.currentPage, {q: utils.genSearchParams(q)});
+        this.getMoneyRecords(this.currentPage, {q: utils.genSearchParams(q)});
       },
       handleCurrentChange (currentPage) {
         this.getMoneyRecords(currentPage);
